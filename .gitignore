@@ -1,0 +1,33 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build
+dist/
+build/
+
+# Output
+output/
+*.html
+*.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Testing
+coverage/
+
+# Misc
+.tmp/
+.cache/
