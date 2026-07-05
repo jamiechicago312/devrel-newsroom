@@ -1,17 +1,17 @@
 # DevRel Newsroom
 
-DevRel Newsroom is a Mastra-based TypeScript project that will generate a review-ready developer newsletter from real open-source project activity.
+DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 1 turns the stock Mastra weather scaffold into a newsroom-shaped base for the Astro newsletter workflow.
+Milestone 2 adds live GitHub release collection for Astro on top of the Milestone 1 newsroom scaffold.
 
-## What exists in Milestone 1
+## What exists in Milestone 2
 
 - project-specific Mastra entrypoint
 - initial newsletter agent placeholder
-- initial newsletter workflow placeholder
-- shared newsletter schemas
-- environment template
-- smoke script for local verification
+- newsletter workflow with a live GitHub release collection step
+- shared newsletter and release schemas
+- GitHub release collection utilities and CLI script
+- smoke script for local verification without network access
 - clean `data/` and `output/` directories for future milestones
 
 ## Requirements
@@ -21,13 +21,17 @@ Milestone 1 turns the stock Mastra weather scaffold into a newsroom-shaped base 
 
 ## Environment setup
 
-Copy `.env.example` to `.env` and fill values as later milestones need them.
+Copy `.env.example` to `.env`.
 
 ```bash
 cp .env.example .env
 ```
 
-Milestone 1 does not require all API keys to be present just to build, run the dev server, or run the smoke script.
+For Milestone 2:
+
+- `GITHUB_TOKEN` is required for live release collection and workflow runs that hit the GitHub API
+- `npm test` does not require live API access
+- `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
 
 ## Run locally
 
@@ -37,7 +41,7 @@ Install dependencies:
 npm install
 ```
 
-Start Mastra Studio:
+Start Mastra Studio for manual inspection:
 
 ```bash
 npm run dev
@@ -62,7 +66,13 @@ npm test
 The current `test` script runs:
 
 - TypeScript typechecking
-- a smoke script that validates the initial newsroom scaffold
+- a smoke script that validates the release collection scaffolding without opening Mastra Studio
+
+Collect live releases for a specific window:
+
+```bash
+npm run collect:releases -- withastro/astro 2026-07-01 2026-07-05
+```
 
 Build the app:
 
@@ -81,6 +91,8 @@ npm run dev
 
 If port `4111` is already in use, Mastra may choose another port. The terminal output will show the active local URL.
 
+`npm test` does not open Mastra Studio and should not be used as a UI verification step.
+
 ## Project layout
 
 ```txt
@@ -97,7 +109,6 @@ src/
 
 ## Next milestones
 
-- GitHub release collection
 - PR and contributor collection
 - blog discovery
 - mock events

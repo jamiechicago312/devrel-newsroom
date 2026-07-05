@@ -14,6 +14,11 @@ build/
 output/
 *.html
 *.json
+!devrel-newsroom/package.json
+!devrel-newsroom/package-lock.json
+!devrel-newsroom/tsconfig.json
+!devrel-newsroom/output/
+!devrel-newsroom/output/.gitkeep
 
 # Logs
 *.log

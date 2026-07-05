@@ -10,6 +10,7 @@ Load the `mastra` skill BEFORE any Mastra work. Never rely on cached knowledge -
 - Use the `dev` and `build` scripts from `package.json` instead of running `mastra dev` / `mastra build` directly
 - When a milestone is completed, push the work to a new branch and open a PR for review
 - In every PR, prioritize clear instructions for how to run and test the milestone locally and in this environment
+- In every PR, explicitly separate automated test steps from manual verification steps. If UI checks such as Mastra Studio are optional and not covered by `npm test`, say that directly.
 
 ## Resources
 

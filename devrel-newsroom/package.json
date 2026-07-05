@@ -1,0 +1,34 @@
+{
+  "name": "devrel-newsroom",
+  "version": "0.2.0",
+  "description": "Mastra-based DevRel newsletter generation workflow for Astro project activity.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "mastra dev",
+    "build": "mastra build",
+    "start": "mastra start",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node --experimental-strip-types scripts/smoke.ts",
+    "test": "npm run typecheck && npm run smoke",
+    "collect:releases": "node --experimental-strip-types scripts/collect-releases.ts"
+  },
+  "dependencies": {
+    "@mastra/core": "^1.49.0",
+    "@mastra/duckdb": "^1.5.0",
+    "@mastra/evals": "^1.5.1",
+    "@mastra/libsql": "^1.15.0",
+    "@mastra/loggers": "^1.2.0",
+    "@mastra/memory": "^1.22.1",
+    "@mastra/observability": "^1.15.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "mastra": "^1.18.0",
+    "typescript": "^6.0.3"
+  }
+}
