@@ -11,7 +11,13 @@ import {
   Observability,
   SensitiveDataFilter,
 } from '@mastra/observability';
+import { communityCuratorAgent } from '../agents/community-curator.agent';
+import { contributorSpotlightAgent } from '../agents/contributor-spotlight.agent';
+import { newsletterEditorAgent } from '../agents/newsletter-editor.agent';
+import { newsletterQaAgent } from '../agents/newsletter-qa.agent';
 import { newsletterWriterAgent } from '../agents/newsletter-writer.agent';
+import { releaseAnalystAgent } from '../agents/release-analyst.agent';
+import { newsletterDraftWorkflow } from '../workflows/newsletter-draft.workflow';
 import { newsletterWorkflow } from '../workflows/newsletter.workflow';
 
 const storageDir = path.resolve(import.meta.dirname, '..', '..', '.mastra', 'storage');
@@ -19,8 +25,15 @@ const storageDir = path.resolve(import.meta.dirname, '..', '..', '.mastra', 'sto
 mkdirSync(storageDir, { recursive: true });
 
 export const mastra = new Mastra({
-  workflows: { newsletterWorkflow },
-  agents: { newsletterWriterAgent },
+  workflows: { newsletterWorkflow, newsletterDraftWorkflow },
+  agents: {
+    releaseAnalystAgent,
+    contributorSpotlightAgent,
+    communityCuratorAgent,
+    newsletterEditorAgent,
+    newsletterWriterAgent,
+    newsletterQaAgent,
+  },
   storage: new MastraCompositeStore({
     id: 'newsroom-storage',
     default: new LibSQLStore({

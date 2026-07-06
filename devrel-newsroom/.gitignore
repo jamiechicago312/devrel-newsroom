@@ -12,3 +12,4 @@ dist
 *.duckdb.wal
 !output/newsletter.html
 !output/newsletter.json
+!output/newsletter-agent-report.json

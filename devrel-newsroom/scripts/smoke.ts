@@ -6,6 +6,7 @@ import {
   filterBlogPostsByWindow,
   parseAstroBlogRss,
 } from '../src/lib/blog.ts';
+import { buildNewsletterDraftingSource } from '../src/lib/drafting-source.ts';
 import { renderNewsletterEmail } from '../src/lib/email.ts';
 import { loadMockEvents, selectNewsletterEvents } from '../src/lib/events.ts';
 import {
@@ -20,6 +21,11 @@ import { buildNotionNewsletterPagePayload, extractMarkdownSectionFromNotionBlock
 import { renderNewsletterBodyMarkdown } from '../src/lib/newsletter.ts';
 import { blogPostCollectionSchema } from '../src/schemas/blog.schema.ts';
 import { githubContributorCollectionSchema } from '../src/schemas/contributor.schema.ts';
+import {
+  newsletterAgentBriefsSchema,
+  newsletterDraftWorkflowOutputSchema,
+  newsletterQaReportSchema,
+} from '../src/schemas/agent.schema.ts';
 import { newsletterEmailArtifactSchema } from '../src/schemas/email.schema.ts';
 import { newsletterDraftSchema, newsletterResearchSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
 import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
@@ -183,6 +189,8 @@ const sampleResearch = newsletterResearchSchema.parse({
   nextUpcomingEvent: sampleEventCollection.nextUpcomingEvent,
 });
 
+const sampleDraftingSource = buildNewsletterDraftingSource(sampleResearch);
+
 const sampleDraft = newsletterDraftSchema.parse({
   subject: 'Astro Weekly: releases, contributors, and community updates',
   previewText: 'A concise recap of Astro releases, new contributors, blog updates, and upcoming events.',
@@ -213,6 +221,37 @@ const sampleDraft = newsletterDraftSchema.parse({
     links: ['https://lu.ma/astro-launch-week-july-2026'],
   },
   closing: 'See you next week for the next Astro roundup.',
+});
+
+const sampleAgentBriefs = newsletterAgentBriefsSchema.parse({
+  releaseHighlights: sampleDraft.releaseHighlights,
+  firstTimeContributorShoutOuts: sampleDraft.firstTimeContributorShoutOuts,
+  latestBlogPost: sampleDraft.latestBlogPost,
+  previousEventThankYou: sampleDraft.previousEventThankYou,
+  upcomingEventReminder: sampleDraft.upcomingEventReminder,
+  editorialOutline: {
+    subject: sampleDraft.subject,
+    previewText: sampleDraft.previewText,
+    intro: sampleDraft.intro,
+    closing: sampleDraft.closing,
+  },
+});
+
+const sampleQaReport = newsletterQaReportSchema.parse({
+  status: 'pass',
+  summary: 'The draft is grounded in the provided sample research and covers each required section.',
+  checks: [
+    'All required sections are present.',
+    'Links point back to source material.',
+    'Tone stays concise and developer-focused.',
+  ],
+});
+
+const sampleWorkflowOutput = newsletterDraftWorkflowOutputSchema.parse({
+  draftingSource: sampleDraftingSource,
+  agentBriefs: sampleAgentBriefs,
+  draft: sampleDraft,
+  qaReport: sampleQaReport,
 });
 
 const sampleNotionPayload = buildNotionNewsletterPagePayload({
@@ -249,9 +288,11 @@ console.log(`Sample releases in window: ${sampleReleaseCollection.releaseCount}`
 console.log(`Sample merged PRs in window: ${sampleContributorCollection.mergedPullRequestCount}`);
 console.log(`Sample first-time contributors: ${sampleContributorCollection.contributorCount}`);
 console.log(`Sample blog posts in window: ${sampleBlogCollection.blogPostCount}`);
+console.log(`Sample drafting source releases: ${sampleDraftingSource.releases.length}`);
 console.log(`Most recent past event: ${sampleEventCollection.mostRecentPastEvent?.title ?? 'none'}`);
 console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.title ?? 'none'}`);
 console.log(`Sample newsletter subject: ${sampleDraft.subject}`);
+console.log(`Sample workflow QA status: ${sampleWorkflowOutput.qaReport.status}`);
 console.log(`Sample newsletter body lines: ${sampleNewsletterBody.split('\n').length}`);
 console.log(`Sample Notion block count: ${sampleNotionPayload.children.length}`);
 console.log(`Sample edited markdown lines: ${sampleEditedMarkdown.split('\n').filter(Boolean).length}`);

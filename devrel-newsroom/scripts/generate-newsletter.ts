@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { newsletterWriterAgent } from '../src/agents/newsletter-writer.agent.ts';
-import { newsletterDraftSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
+import { newsletterDraftWorkflow } from '../src/workflows/newsletter-draft.workflow.ts';
+import { newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
 import { newsletterWorkflow } from '../src/workflows/newsletter.workflow.ts';
 
 const sourceProject = process.argv[2] ?? 'withastro/astro';
@@ -28,66 +28,31 @@ if (workflowResult.status !== 'success') {
   throw new Error(`Newsletter workflow failed with status: ${workflowResult.status}`);
 }
 
-const research = workflowResult.result;
-const draftingSource = {
-  sourceProject: research.sourceProject,
-  startDate: research.startDate,
-  endDate: research.endDate,
-  releaseCount: research.releaseCount,
-  releases: research.releases.slice(0, 5).map(release => ({
-    name: release.name,
-    tagName: release.tagName,
-    url: release.url,
-    publishedDate: release.publishedDate,
-    summary: release.summary,
-  })),
-  contributorCount: research.contributorCount,
-  contributors: research.contributors.slice(0, 5).map(contributor => ({
-    login: contributor.login,
-    mergedDate: contributor.mergedDate,
-    pullRequestTitle: contributor.pullRequest.title,
-    pullRequestUrl: contributor.pullRequest.url,
-  })),
-  blogPostCount: research.blogPostCount,
-  blogPosts: research.blogPosts.slice(0, 3).map(post => ({
-    title: post.title,
-    url: post.url,
-    publishedDate: post.publishedDate,
-    summarySourceText: post.summarySourceText,
-  })),
-  mostRecentPastEvent: research.mostRecentPastEvent,
-  nextUpcomingEvent: research.nextUpcomingEvent,
-};
-
-const prompt = `Draft a concise developer newsletter from the structured source data below.
-
-Required output sections:
-- subject
-- previewText
-- intro
-- releaseHighlights
-- firstTimeContributorShoutOuts
-- latestBlogPost
-- previousEventThankYou
-- upcomingEventReminder
-- closing
-
-Use only facts and links present in the source data.
-Keep it concise.
-
-Source data:
-${JSON.stringify(draftingSource, null, 2)}`;
-
-const draftResult = await newsletterWriterAgent.generate(prompt, {
-  structuredOutput: {
-    schema: newsletterDraftSchema,
-  },
+const draftRun = await newsletterDraftWorkflow.createRun();
+const draftResult = await draftRun.start({
+  inputData: workflowResult.result,
 });
 
-const outputPath = path.resolve(import.meta.dirname, '..', 'output', 'newsletter-draft.json');
-mkdirSync(path.dirname(outputPath), { recursive: true });
-writeFileSync(outputPath, `${JSON.stringify(draftResult.object, null, 2)}\n`);
+if (draftResult.status !== 'success') {
+  throw new Error(`Newsletter draft workflow failed with status: ${draftResult.status}`);
+}
 
-console.log(`Wrote newsletter draft to ${outputPath}`);
-console.log(`Subject: ${draftResult.object.subject}`);
-console.log(`Preview: ${draftResult.object.previewText}`);
+const outputDir = path.resolve(import.meta.dirname, '..', 'output');
+mkdirSync(outputDir, { recursive: true });
+
+const draftPath = path.resolve(outputDir, 'newsletter-draft.json');
+const reportPath = path.resolve(outputDir, 'newsletter-agent-report.json');
+
+writeFileSync(draftPath, `${JSON.stringify(draftResult.result.draft, null, 2)}\n`);
+writeFileSync(reportPath, `${JSON.stringify({
+  draftingSource: draftResult.result.draftingSource,
+  agentBriefs: draftResult.result.agentBriefs,
+  qaReport: draftResult.result.qaReport,
+}, null, 2)}\n`);
+
+console.log(`Wrote newsletter draft to ${draftPath}`);
+console.log(`Wrote multi-agent report to ${reportPath}`);
+console.log(`Subject: ${draftResult.result.draft.subject}`);
+console.log(`Preview: ${draftResult.result.draft.previewText}`);
+console.log(`QA status: ${draftResult.result.qaReport.status}`);
+console.log(`QA summary: ${draftResult.result.qaReport.summary}`);
