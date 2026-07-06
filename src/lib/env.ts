@@ -13,6 +13,7 @@ for (const envPath of envPaths) {
 }
 
 export const envSchema = z.object({
+  OPENAI_API_KEY: z.string().optional(),
   GOOGLE_API_KEY: z.string().optional(),
   GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),

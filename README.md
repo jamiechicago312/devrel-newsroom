@@ -15,7 +15,7 @@ For developers, the point is bigger than newsletters. The same pattern works for
 
 - `Mastra` provides the workflow and agent framework so the collection, drafting, and QA stages are explicit, inspectable, and easy to demo.
 - `TypeScript` keeps the schemas and handoffs strict across collectors, agents, rendering, and publishing.
-- `Gemini Flash` keeps iterative multi-agent drafting affordable while staying fast enough for repeated runs.
+- `OpenAI GPT-5.4 mini` is the primary drafting model for fast structured output, while optional Gemini fallback keys can keep the workflow moving if OpenAI hits a provider limit.
 - `React Email` turns the final draft into a deliverable email artifact instead of leaving the output as raw JSON.
 - `Notion` makes it easy to push the draft into a real editorial workflow and pull edited copy back out.
 
@@ -38,7 +38,8 @@ cp .env.example .env
 
 Environment notes:
 
-- `GOOGLE_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is required for the Gemini-backed agent pipeline
+- `OPENAI_API_KEY` is required for the primary OpenAI-backed agent pipeline
+- `GOOGLE_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is optional and is only used as a fallback if OpenAI model calls hit a provider limit
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
 - `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing and sync-back
