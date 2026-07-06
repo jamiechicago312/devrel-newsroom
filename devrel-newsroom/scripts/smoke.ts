@@ -17,8 +17,10 @@ import {
 } from '../src/lib/github.ts';
 import { blogPostCollectionSchema } from '../src/schemas/blog.schema.ts';
 import { githubContributorCollectionSchema } from '../src/schemas/contributor.schema.ts';
-import { newsletterDraftSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
+import { newsletterDraftSchema, newsletterResearchSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
 import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
+import { buildNotionNewsletterPagePayload } from '../src/lib/notion.ts';
+import { renderNewsletterBodyMarkdown } from '../src/lib/newsletter.ts';
 
 const sampleWindow = newsletterWindowInputSchema.parse({
   sourceProject: 'withastro/astro',
@@ -159,6 +161,26 @@ const sampleBlogCollection = blogPostCollectionSchema.parse({
   posts: sampleBlogPosts,
 });
 
+const sampleResearch = newsletterResearchSchema.parse({
+  sourceProject: sampleWindow.sourceProject,
+  startDate: sampleWindow.startDate,
+  endDate: sampleWindow.endDate,
+  windowDays: 8,
+  status: 'ready',
+  releaseCount: matchingReleases.length,
+  releases: matchingReleases,
+  mergedPullRequestCount: matchingPullRequests.length,
+  mergedPullRequests: matchingPullRequests,
+  contributorCount: contributors.length,
+  contributors,
+  blogSource: collectedBlogPosts.source,
+  blogPostCount: sampleBlogPosts.length,
+  blogPosts: sampleBlogPosts,
+  eventSource: sampleEventCollection.source,
+  mostRecentPastEvent: sampleEventCollection.mostRecentPastEvent,
+  nextUpcomingEvent: sampleEventCollection.nextUpcomingEvent,
+});
+
 const sampleDraft = newsletterDraftSchema.parse({
   subject: 'Astro Weekly: releases, contributors, and community updates',
   previewText: 'A concise recap of Astro releases, new contributors, blog updates, and upcoming events.',
@@ -191,6 +213,15 @@ const sampleDraft = newsletterDraftSchema.parse({
   closing: 'See you next week for the next Astro roundup.',
 });
 
+const sampleNotionPayload = buildNotionNewsletterPagePayload({
+  parentPageId: 'notion-parent-page-id',
+  draft: sampleDraft,
+  research: sampleResearch,
+  generatedAt: '2026-07-06T00:00:00.000Z',
+});
+
+const sampleNewsletterBody = renderNewsletterBodyMarkdown(sampleDraft);
+
 const env = readEnv();
 const configuredKeys = Object.entries(env)
   .filter(([, value]) => Boolean(value))
@@ -208,6 +239,8 @@ console.log(`Sample blog posts in window: ${sampleBlogCollection.blogPostCount}`
 console.log(`Most recent past event: ${sampleEventCollection.mostRecentPastEvent?.title ?? 'none'}`);
 console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.title ?? 'none'}`);
 console.log(`Sample newsletter subject: ${sampleDraft.subject}`);
+console.log(`Sample newsletter body lines: ${sampleNewsletterBody.split('\n').length}`);
+console.log(`Sample Notion block count: ${sampleNotionPayload.children.length}`);
 console.log(`Blog source URL: ${astroBlogConfig.blogUrl}`);
 console.log(`Blog RSS URL: ${astroBlogConfig.rssUrl}`);
 console.log(`Configured env keys: ${configuredKeys.length ? configuredKeys.join(', ') : 'none'}`);
