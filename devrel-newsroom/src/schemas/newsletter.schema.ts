@@ -48,6 +48,38 @@ export const newsletterResearchSchema = z.object({
   nextUpcomingEvent: eventCollectionSchema.shape.nextUpcomingEvent,
 });
 
+export const newsletterDraftingSourceSchema = z.object({
+  sourceProject: z.string().min(1),
+  projectUrl: z.string().url(),
+  startDate: z.string().date(),
+  endDate: z.string().date(),
+  releaseCount: z.number().int().nonnegative(),
+  releases: z.array(z.object({
+    name: z.string().min(1),
+    tagName: z.string().min(1),
+    url: z.string().url(),
+    publishedDate: z.string().date(),
+    summary: z.string(),
+  })),
+  contributorCount: z.number().int().nonnegative(),
+  contributors: z.array(z.object({
+    login: z.string().min(1),
+    mergedDate: z.string().date(),
+    pullRequestTitle: z.string().min(1),
+    pullRequestUrl: z.string().url(),
+  })),
+  blogPostCount: z.number().int().nonnegative(),
+  blogPosts: z.array(z.object({
+    title: z.string().min(1),
+    url: z.string().url(),
+    publishedDate: z.string().date(),
+    summarySourceText: z.string().min(1),
+  })),
+  mostRecentPastEvent: eventCollectionSchema.shape.mostRecentPastEvent,
+  nextUpcomingEvent: eventCollectionSchema.shape.nextUpcomingEvent,
+});
+
 export type NewsletterWindowInput = z.infer<typeof newsletterWindowInputSchema>;
 export type NewsletterDraft = z.infer<typeof newsletterDraftSchema>;
 export type NewsletterResearch = z.infer<typeof newsletterResearchSchema>;
+export type NewsletterDraftingSource = z.infer<typeof newsletterDraftingSourceSchema>;

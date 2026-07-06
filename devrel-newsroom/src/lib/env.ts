@@ -5,6 +5,7 @@ loadDotenv();
 
 export const envSchema = z.object({
   GOOGLE_API_KEY: z.string().optional(),
+  GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),
   TAVILY_API_KEY: z.string().optional(),
   NOTION_TOKEN: z.string().optional(),
@@ -14,5 +15,11 @@ export const envSchema = z.object({
 export type AppEnv = z.infer<typeof envSchema>;
 
 export function readEnv(env: NodeJS.ProcessEnv = process.env): AppEnv {
-  return envSchema.parse(env);
+  const parsed = envSchema.parse(env);
+
+  if (!parsed.GOOGLE_API_KEY && parsed.GOOGLE_GENERATIVE_AI_API_KEY) {
+    parsed.GOOGLE_API_KEY = parsed.GOOGLE_GENERATIVE_AI_API_KEY;
+  }
+
+  return parsed;
 }

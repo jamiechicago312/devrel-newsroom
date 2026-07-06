@@ -1,0 +1,160 @@
+{
+  "draftingSource": {
+    "sourceProject": "withastro/astro",
+    "projectUrl": "https://github.com/withastro/astro",
+    "startDate": "2026-06-28",
+    "endDate": "2026-07-05",
+    "releaseCount": 20,
+    "releases": [
+      {
+        "name": "create-astro@5.2.2",
+        "tagName": "create-astro@5.2.2",
+        "url": "https://github.com/withastro/astro/releases/tag/create-astro%405.2.2",
+        "publishedDate": "2026-07-02",
+        "summary": "### Patch Changes -   [#17259](https://github.com/withastro/astro/pull/17259) [`ed6bea5`](https://github.com/withastro/astro/commit/ed6bea5ad9ff6036f7bc26cfbcb6f999142d16ef) Thanks [@astrobot-houston](https://github.com/astrobot-houston)! - Fixes proxy support by respecting `H..."
+      },
+      {
+        "name": "astro@7.0.6",
+        "tagName": "astro@7.0.6",
+        "url": "https://github.com/withastro/astro/releases/tag/astro%407.0.6",
+        "publishedDate": "2026-07-02",
+        "summary": "### Patch Changes -   [#17261](https://github.com/withastro/astro/pull/17261) [`79aa99c`](https://github.com/withastro/astro/commit/79aa99c648b4b40b95a31d4a961b77074cf7963c) Thanks [@astrobot-houston](https://github.com/astrobot-houston)! - Fixes a false deprecation warning fo..."
+      },
+      {
+        "name": "@astrojs/vercel@11.0.2",
+        "tagName": "@astrojs/vercel@11.0.2",
+        "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/vercel%4011.0.2",
+        "publishedDate": "2026-07-02",
+        "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+      },
+      {
+        "name": "@astrojs/ts-plugin@1.10.10",
+        "tagName": "@astrojs/ts-plugin@1.10.10",
+        "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/ts-plugin%401.10.10",
+        "publishedDate": "2026-07-02",
+        "summary": "### Patch Changes -   [#17269](https://github.com/withastro/astro/pull/17269) [`c72d4f2`](https://github.com/withastro/astro/commit/c72d4f2d55054d65d574aa38925f6b05550f0ed1) Thanks [@matthewp](https://github.com/matthewp)! - Fixes \"Go To References\" from `.ts` files missing us..."
+      },
+      {
+        "name": "@astrojs/solid-js@7.0.1",
+        "tagName": "@astrojs/solid-js@7.0.1",
+        "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/solid-js%407.0.1",
+        "publishedDate": "2026-07-02",
+        "summary": "### Patch Changes -   [#17270](https://github.com/withastro/astro/pull/17270) [`0142964`](https://github.com/withastro/astro/commit/014296439e084384432e13f2e5b192b0f595045d) Thanks [@FrancoKaddour](https://github.com/FrancoKaddour)! - Fix `@astrojs/solid-js` incorrectly claimi..."
+      }
+    ],
+    "contributorCount": 4,
+    "contributors": [
+      {
+        "login": "jan-kubica",
+        "mergedDate": "2026-06-30",
+        "pullRequestTitle": "fix: background dev server fails to start in hoisted monorepos",
+        "pullRequestUrl": "https://github.com/withastro/astro/pull/17193"
+      },
+      {
+        "login": "dupontcyborg",
+        "mergedDate": "2026-07-01",
+        "pullRequestTitle": "fix(language-server): bump volar-service-* to 0.0.71 (CVE-2026-33532)",
+        "pullRequestUrl": "https://github.com/withastro/astro/pull/17059"
+      },
+      {
+        "login": "FrancoKaddour",
+        "mergedDate": "2026-07-02",
+        "pullRequestTitle": "fix(@astrojs/solid-js): detect Svelte 5 components using the $$renderer prop",
+        "pullRequestUrl": "https://github.com/withastro/astro/pull/17270"
+      },
+      {
+        "login": "chatman-media",
+        "mergedDate": "2026-07-02",
+        "pullRequestTitle": "Fix route generator throwing on a dynamic param value of 0",
+        "pullRequestUrl": "https://github.com/withastro/astro/pull/17247"
+      }
+    ],
+    "blogPostCount": 1,
+    "blogPosts": [
+      {
+        "title": "What&apos;s new in Astro - June 2026",
+        "url": "https://astro.build/blog/whats-new-june-2026/",
+        "publishedDate": "2026-06-30",
+        "summarySourceText": "June 2026 - Astro 7, summer swag collection, Astro Germany meetup, and more!"
+      }
+    ],
+    "mostRecentPastEvent": {
+      "id": "astro-community-call-june-2026",
+      "title": "Astro Community Call - June 2026",
+      "url": "https://lu.ma/astro-community-call-june-2026",
+      "startAt": "2026-06-24T17:00:00Z",
+      "endAt": "2026-06-24T18:00:00Z",
+      "startDate": "2026-06-24",
+      "endDate": "2026-06-24",
+      "location": "Online",
+      "summary": "Community Q&A and project updates from the Astro team."
+    },
+    "nextUpcomingEvent": {
+      "id": "astro-launch-week-july-2026",
+      "title": "Astro Launch Week - July 2026",
+      "url": "https://lu.ma/astro-launch-week-july-2026",
+      "startAt": "2026-07-08T16:00:00Z",
+      "endAt": "2026-07-08T17:30:00Z",
+      "startDate": "2026-07-08",
+      "endDate": "2026-07-08",
+      "location": "Online",
+      "summary": "Launch Week kickoff with demos, announcements, and community highlights."
+    }
+  },
+  "agentBriefs": {
+    "releaseHighlights": {
+      "title": "Astro Release Highlights",
+      "summary": "Recent Astro updates include `astro@7.0.6` fixing a false deprecation warning and `create-astro@5.2.2` improving proxy support. For developers, `@astrojs/ts-plugin@1.10.10` addresses an issue with \"Go To References\" in TypeScript files, and `@astrojs/solid-js@7.0.1` resolves an incorrect claim for Solid.js integration.",
+      "links": [
+        "https://github.com/withastro/astro/releases/tag/astro%407.0.6",
+        "https://github.com/withastro/astro/releases/tag/create-astro%405.2.2",
+        "https://github.com/withastro/astro/releases/tag/%40astrojs/ts-plugin%401.10.10",
+        "https://github.com/withastro/astro/releases/tag/%40astrojs/solid-js%407.0.1"
+      ]
+    },
+    "firstTimeContributorShoutOuts": {
+      "title": "First-Time Contributor Shout-Outs!",
+      "summary": "A huge welcome and thank you to our first-time contributors! jan-kubica helped fix a background dev server issue in monorepos. dupontcyborg addressed a language server security vulnerability. FrancoKaddour improved Svelte 5 component detection for Solid.js integration. chatman-media fixed a route generator bug. We appreciate your valuable contributions!",
+      "links": [
+        "https://github.com/withastro/astro/pull/17193",
+        "https://github.com/withastro/astro/pull/17059",
+        "https://github.com/withastro/astro/pull/17270",
+        "https://github.com/withastro/astro/pull/17247"
+      ]
+    },
+    "latestBlogPost": {
+      "title": "What&apos;s new in Astro - June 2026",
+      "summary": "June 2026 - Astro 7, summer swag collection, Astro Germany meetup, and more!",
+      "links": [
+        "https://astro.build/blog/whats-new-june-2026/"
+      ]
+    },
+    "previousEventThankYou": {
+      "title": "Astro Community Call - June 2026",
+      "summary": "Thank you for attending the Community Q&A and project updates from the Astro team.",
+      "links": [
+        "https://lu.ma/astro-community-call-june-2026"
+      ]
+    },
+    "upcomingEventReminder": {
+      "title": "Astro Launch Week - July 2026",
+      "summary": "Join us for Launch Week kickoff with demos, announcements, and community highlights.",
+      "links": [
+        "https://lu.ma/astro-launch-week-july-2026"
+      ]
+    },
+    "editorialOutline": {
+      "subject": "Astro Weekly: Latest Updates & Launch Week Incoming",
+      "previewText": "Get the scoop on recent Astro releases, welcome new contributors, and mark your calendars for Astro Launch Week.",
+      "intro": "Welcome to your weekly Astro update. This edition brings you the latest releases from June 28 - July 5, celebrates our newest contributors, and looks ahead to Launch Week (July 2026).",
+      "closing": "That's all for this week's Astro updates. Thank you for being a part of our community. We look forward to seeing you at Launch Week and next week's edition!"
+    }
+  },
+  "qaReport": {
+    "status": "pass",
+    "summary": "The newsletter draft is well-grounded and complete, aligning perfectly with all provided briefs. No missing information, ungrounded claims, or weaker sections were identified.",
+    "checks": [
+      "No additional QA issues were flagged."
+    ]
+  }
+}
