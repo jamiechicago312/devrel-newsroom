@@ -1,3 +1,9 @@
+import {
+  firstTimeContributorSchema,
+  githubPullRequestSchema,
+  type FirstTimeContributor,
+  type GitHubPullRequest,
+} from '../schemas/contributor.schema.ts';
 import { githubReleaseSchema, type GitHubRelease } from '../schemas/release.schema.ts';
 
 type GitHubReleaseApiRecord = {
@@ -14,7 +20,32 @@ type GitHubReleaseApiRecord = {
   } | null;
 };
 
+type GitHubPullRequestApiRecord = {
+  number: number;
+  title: string;
+  html_url: string;
+  merged_at: string | null;
+  updated_at: string;
+  user: {
+    login: string;
+  } | null;
+};
+
 const githubApiBaseUrl = 'https://api.github.com';
+
+function buildGitHubHeaders(githubToken?: string): Record<string, string> {
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'devrel-newsroom',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+
+  if (githubToken) {
+    headers.Authorization = `Bearer ${githubToken}`;
+  }
+
+  return headers;
+}
 
 function trimReleaseSummary(body: string | null | undefined): string {
   if (!body) {
@@ -54,6 +85,21 @@ export function normalizeGitHubRelease(record: GitHubReleaseApiRecord): GitHubRe
   });
 }
 
+export function normalizeGitHubPullRequest(record: GitHubPullRequestApiRecord): GitHubPullRequest {
+  if (!record.merged_at) {
+    throw new Error(`Pull request #${record.number} is missing merged_at`);
+  }
+
+  return githubPullRequestSchema.parse({
+    number: record.number,
+    title: record.title.trim() || `PR #${record.number}`,
+    url: record.html_url,
+    authorLogin: record.user?.login ?? 'unknown',
+    mergedAt: record.merged_at,
+    mergedDate: record.merged_at.slice(0, 10),
+  });
+}
+
 export function parseSourceProject(sourceProject: string): { owner: string; repo: string } {
   const [owner, repo, ...rest] = sourceProject.split('/').map(part => part.trim()).filter(Boolean);
 
@@ -71,18 +117,9 @@ export async function fetchGitHubReleases(input: {
 }): Promise<GitHubRelease[]> {
   const { owner, repo } = parseSourceProject(input.sourceProject);
   const fetchImpl = input.fetchImpl ?? fetch;
-  const headers: Record<string, string> = {
-    Accept: 'application/vnd.github+json',
-    'User-Agent': 'devrel-newsroom',
-    'X-GitHub-Api-Version': '2022-11-28',
-  };
-
-  if (input.githubToken) {
-    headers.Authorization = `Bearer ${input.githubToken}`;
-  }
 
   const response = await fetchImpl(`${githubApiBaseUrl}/repos/${owner}/${repo}/releases?per_page=20`, {
-    headers,
+    headers: buildGitHubHeaders(input.githubToken),
   });
 
   if (!response.ok) {
@@ -93,6 +130,50 @@ export async function fetchGitHubReleases(input: {
   return payload.map(normalizeGitHubRelease);
 }
 
+export async function fetchMergedPullRequests(input: {
+  sourceProject: string;
+  startDate?: string;
+  githubToken?: string;
+  fetchImpl?: typeof fetch;
+  maxPages?: number;
+}): Promise<GitHubPullRequest[]> {
+  const { owner, repo } = parseSourceProject(input.sourceProject);
+  const fetchImpl = input.fetchImpl ?? fetch;
+  const maxPages = input.maxPages ?? 10;
+  const pullRequests: GitHubPullRequest[] = [];
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const response = await fetchImpl(
+      `${githubApiBaseUrl}/repos/${owner}/${repo}/pulls?state=closed&sort=updated&direction=desc&per_page=100&page=${page}`,
+      {
+        headers: buildGitHubHeaders(input.githubToken),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`GitHub pull requests request failed with ${response.status} ${response.statusText}`);
+    }
+
+    const payload = (await response.json()) as GitHubPullRequestApiRecord[];
+    if (!payload.length) {
+      break;
+    }
+
+    for (const record of payload) {
+      if (record.merged_at) {
+        pullRequests.push(normalizeGitHubPullRequest(record));
+      }
+    }
+
+    const oldestUpdatedAt = payload[payload.length - 1]?.updated_at;
+    if (input.startDate && oldestUpdatedAt && oldestUpdatedAt.slice(0, 10) < input.startDate) {
+      break;
+    }
+  }
+
+  return pullRequests;
+}
+
 export function filterReleasesByWindow(input: {
   releases: GitHubRelease[];
   startDate: string;
@@ -101,4 +182,95 @@ export function filterReleasesByWindow(input: {
   return input.releases.filter(release => {
     return release.publishedDate >= input.startDate && release.publishedDate <= input.endDate;
   });
+}
+
+export function filterPullRequestsByWindow(input: {
+  pullRequests: GitHubPullRequest[];
+  startDate: string;
+  endDate: string;
+}): GitHubPullRequest[] {
+  return input.pullRequests
+    .filter(pullRequest => {
+      return pullRequest.mergedDate >= input.startDate && pullRequest.mergedDate <= input.endDate;
+    })
+    .sort((left, right) => {
+      return left.mergedAt.localeCompare(right.mergedAt) || left.number - right.number;
+    });
+}
+
+async function hasMergedPullRequestBefore(input: {
+  sourceProject: string;
+  authorLogin: string;
+  mergedAt: string;
+  githubToken?: string;
+  fetchImpl?: typeof fetch;
+}): Promise<boolean> {
+  const { owner, repo } = parseSourceProject(input.sourceProject);
+  const fetchImpl = input.fetchImpl ?? fetch;
+  const query = `repo:${owner}/${repo} is:pr is:merged author:${input.authorLogin} merged:<${input.mergedAt}`;
+  const url = `${githubApiBaseUrl}/search/issues?q=${encodeURIComponent(query)}&per_page=1`;
+
+  const response = await fetchImpl(url, {
+    headers: buildGitHubHeaders(input.githubToken),
+  });
+
+  if (!response.ok) {
+    throw new Error(`GitHub contributor search failed with ${response.status} ${response.statusText}`);
+  }
+
+  const payload = (await response.json()) as { total_count?: number };
+  return (payload.total_count ?? 0) > 0;
+}
+
+export async function identifyFirstTimeContributors(input: {
+  sourceProject: string;
+  pullRequests: GitHubPullRequest[];
+  githubToken?: string;
+  fetchImpl?: typeof fetch;
+  hasPriorMergedPullRequest?: (args: {
+    sourceProject: string;
+    authorLogin: string;
+    mergedAt: string;
+  }) => Promise<boolean>;
+}): Promise<FirstTimeContributor[]> {
+  const seenAuthors = new Set<string>();
+  const contributors: FirstTimeContributor[] = [];
+  const pullRequests = [...input.pullRequests].sort((left, right) => {
+    return left.mergedAt.localeCompare(right.mergedAt) || left.number - right.number;
+  });
+
+  for (const pullRequest of pullRequests) {
+    const authorLogin = pullRequest.authorLogin.trim();
+
+    if (!authorLogin || authorLogin === 'unknown' || seenAuthors.has(authorLogin)) {
+      continue;
+    }
+
+    const hasPriorMergedPullRequest = input.hasPriorMergedPullRequest
+      ? await input.hasPriorMergedPullRequest({
+          sourceProject: input.sourceProject,
+          authorLogin,
+          mergedAt: pullRequest.mergedAt,
+        })
+      : await hasMergedPullRequestBefore({
+          sourceProject: input.sourceProject,
+          authorLogin,
+          mergedAt: pullRequest.mergedAt,
+          githubToken: input.githubToken,
+          fetchImpl: input.fetchImpl,
+        });
+
+    seenAuthors.add(authorLogin);
+
+    if (!hasPriorMergedPullRequest) {
+      contributors.push(firstTimeContributorSchema.parse({
+        login: authorLogin,
+        mergedAt: pullRequest.mergedAt,
+        mergedDate: pullRequest.mergedDate,
+        pullRequest,
+      }));
+    }
+  }
+
+  return contributors;
 }

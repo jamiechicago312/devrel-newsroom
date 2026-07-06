@@ -1,7 +1,14 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows';
 import { z } from 'zod';
 import { readEnv } from '../lib/env';
-import { fetchGitHubReleases, filterReleasesByWindow } from '../lib/github';
+import {
+  fetchGitHubReleases,
+  fetchMergedPullRequests,
+  filterPullRequestsByWindow,
+  filterReleasesByWindow,
+  identifyFirstTimeContributors,
+} from '../lib/github';
+import { githubContributorCollectionSchema, githubPullRequestSchema, firstTimeContributorSchema } from '../schemas/contributor.schema';
 import { newsletterWindowInputSchema } from '../schemas/newsletter.schema';
 import { githubReleaseSchema } from '../schemas/release.schema';
 
@@ -13,9 +20,16 @@ const newsletterWindowSchema = z.object({
   status: z.literal('ready'),
 });
 
-const newsletterResearchSchema = newsletterWindowSchema.extend({
+const newsletterReleaseResearchSchema = newsletterWindowSchema.extend({
   releaseCount: z.number().int().nonnegative(),
   releases: z.array(githubReleaseSchema),
+});
+
+const newsletterResearchSchema = newsletterReleaseResearchSchema.extend({
+  mergedPullRequestCount: z.number().int().nonnegative(),
+  mergedPullRequests: z.array(githubPullRequestSchema),
+  contributorCount: z.number().int().nonnegative(),
+  contributors: z.array(firstTimeContributorSchema),
 });
 
 const prepareNewsletterWindow = createStep({
@@ -56,7 +70,7 @@ const collectGitHubReleases = createStep({
   id: 'collect-github-releases',
   description: 'Collects published GitHub releases for the configured source project within the requested window.',
   inputSchema: newsletterWindowSchema,
-  outputSchema: newsletterResearchSchema,
+  outputSchema: newsletterReleaseResearchSchema,
   execute: async ({ inputData }) => {
     if (!inputData) {
       throw new Error('Input data is required');
@@ -86,12 +100,66 @@ const collectGitHubReleases = createStep({
   },
 });
 
+const collectGitHubContributors = createStep({
+  id: 'collect-github-contributors',
+  description: 'Collects merged pull requests in the window and identifies first-time contributors.',
+  inputSchema: newsletterReleaseResearchSchema,
+  outputSchema: newsletterResearchSchema,
+  execute: async ({ inputData }) => {
+    if (!inputData) {
+      throw new Error('Input data is required');
+    }
+
+    const env = readEnv();
+    if (!env.GITHUB_TOKEN) {
+      throw new Error('GITHUB_TOKEN is required to collect live GitHub pull requests');
+    }
+
+    const mergedPullRequests = await fetchMergedPullRequests({
+      sourceProject: inputData.sourceProject,
+      startDate: inputData.startDate,
+      githubToken: env.GITHUB_TOKEN,
+    });
+
+    const filteredPullRequests = filterPullRequestsByWindow({
+      pullRequests: mergedPullRequests,
+      startDate: inputData.startDate,
+      endDate: inputData.endDate,
+    });
+
+    const contributors = await identifyFirstTimeContributors({
+      sourceProject: inputData.sourceProject,
+      pullRequests: filteredPullRequests,
+      githubToken: env.GITHUB_TOKEN,
+    });
+
+    githubContributorCollectionSchema.parse({
+      sourceProject: inputData.sourceProject,
+      startDate: inputData.startDate,
+      endDate: inputData.endDate,
+      mergedPullRequestCount: filteredPullRequests.length,
+      mergedPullRequests: filteredPullRequests,
+      contributorCount: contributors.length,
+      contributors,
+    });
+
+    return {
+      ...inputData,
+      mergedPullRequestCount: filteredPullRequests.length,
+      mergedPullRequests: filteredPullRequests,
+      contributorCount: contributors.length,
+      contributors,
+    };
+  },
+});
+
 export const newsletterWorkflow = createWorkflow({
   id: 'newsletter-workflow',
   inputSchema: newsletterWindowInputSchema,
   outputSchema: newsletterResearchSchema,
 })
   .then(prepareNewsletterWindow)
-  .then(collectGitHubReleases);
+  .then(collectGitHubReleases)
+  .then(collectGitHubContributors);
 
 newsletterWorkflow.commit();

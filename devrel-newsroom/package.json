@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "smoke": "node --experimental-strip-types scripts/smoke.ts",
     "test": "npm run typecheck && npm run smoke",
-    "collect:releases": "node --experimental-strip-types scripts/collect-releases.ts"
+    "collect:releases": "node --experimental-strip-types scripts/collect-releases.ts",
+    "collect:contributors": "node --experimental-strip-types scripts/collect-contributors.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",
