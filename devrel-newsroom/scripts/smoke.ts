@@ -17,7 +17,7 @@ import {
 } from '../src/lib/github.ts';
 import { blogPostCollectionSchema } from '../src/schemas/blog.schema.ts';
 import { githubContributorCollectionSchema } from '../src/schemas/contributor.schema.ts';
-import { newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
+import { newsletterDraftSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
 import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
 
 const sampleWindow = newsletterWindowInputSchema.parse({
@@ -159,6 +159,38 @@ const sampleBlogCollection = blogPostCollectionSchema.parse({
   posts: sampleBlogPosts,
 });
 
+const sampleDraft = newsletterDraftSchema.parse({
+  subject: 'Astro Weekly: releases, contributors, and community updates',
+  previewText: 'A concise recap of Astro releases, new contributors, blog updates, and upcoming events.',
+  intro: 'This week in Astro brought a stable release, community contributions, and one new blog post to catch up on.',
+  releaseHighlights: {
+    title: 'Release Highlights',
+    summary: 'Astro 5.0 shipped during the window with stable release notes and fixes.',
+    links: [sampleRelease.url],
+  },
+  firstTimeContributorShoutOuts: {
+    title: 'First-Time Contributor Shout-Outs',
+    summary: 'New contributors landed docs and cleanup work during this newsletter window.',
+    links: ['https://github.com/withastro/astro/pull/101'],
+  },
+  latestBlogPost: {
+    title: 'Latest Blog Post',
+    summary: 'The latest Astro blog post covered July 2026 updates and community news.',
+    links: ['https://astro.build/blog/whats-new-july-2026/'],
+  },
+  previousEventThankYou: {
+    title: 'Thanks For Joining',
+    summary: 'Thanks to everyone who joined the Astro Community Call in June 2026.',
+    links: ['https://lu.ma/astro-community-call-june-2026'],
+  },
+  upcomingEventReminder: {
+    title: 'Coming Up Next',
+    summary: 'Astro Launch Week is the next upcoming event in the mock schedule.',
+    links: ['https://lu.ma/astro-launch-week-july-2026'],
+  },
+  closing: 'See you next week for the next Astro roundup.',
+});
+
 const env = readEnv();
 const configuredKeys = Object.entries(env)
   .filter(([, value]) => Boolean(value))
@@ -175,6 +207,7 @@ console.log(`Sample first-time contributors: ${sampleContributorCollection.contr
 console.log(`Sample blog posts in window: ${sampleBlogCollection.blogPostCount}`);
 console.log(`Most recent past event: ${sampleEventCollection.mostRecentPastEvent?.title ?? 'none'}`);
 console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.title ?? 'none'}`);
+console.log(`Sample newsletter subject: ${sampleDraft.subject}`);
 console.log(`Blog source URL: ${astroBlogConfig.blogUrl}`);
 console.log(`Blog RSS URL: ${astroBlogConfig.rssUrl}`);
 console.log(`Configured env keys: ${configuredKeys.length ? configuredKeys.join(', ') : 'none'}`);

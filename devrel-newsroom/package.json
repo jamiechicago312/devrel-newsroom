@@ -18,7 +18,8 @@
     "collect:contributors": "node --experimental-strip-types scripts/collect-contributors.ts",
     "collect:blog": "node --experimental-strip-types scripts/collect-blog.ts",
     "collect:events": "node --experimental-strip-types scripts/collect-events.ts",
-    "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts"
+    "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts",
+    "generate:newsletter": "node --experimental-strip-types scripts/generate-newsletter.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",

@@ -7,17 +7,21 @@ export const newsletterWindowInputSchema = z.object({
 });
 
 export const newsletterSectionSchema = z.object({
-  title: z.string(),
-  summary: z.string(),
-  links: z.array(z.string().url()).default([]),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  links: z.array(z.string().url()).min(1),
 });
 
 export const newsletterDraftSchema = z.object({
-  subject: z.string(),
-  previewText: z.string(),
-  intro: z.string(),
-  sections: z.array(newsletterSectionSchema),
-  closing: z.string(),
+  subject: z.string().min(1),
+  previewText: z.string().min(1),
+  intro: z.string().min(1),
+  releaseHighlights: newsletterSectionSchema,
+  firstTimeContributorShoutOuts: newsletterSectionSchema,
+  latestBlogPost: newsletterSectionSchema,
+  previousEventThankYou: newsletterSectionSchema,
+  upcomingEventReminder: newsletterSectionSchema,
+  closing: z.string().min(1),
 });
 
 export type NewsletterWindowInput = z.infer<typeof newsletterWindowInputSchema>;
