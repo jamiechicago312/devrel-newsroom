@@ -12,8 +12,7 @@ import {
 } from '../lib/github.ts';
 import { blogPostSchema } from '../schemas/blog.schema.ts';
 import { githubContributorCollectionSchema, githubPullRequestSchema, firstTimeContributorSchema } from '../schemas/contributor.schema.ts';
-import { eventCollectionSchema } from '../schemas/event.schema.ts';
-import { newsletterWindowInputSchema } from '../schemas/newsletter.schema.ts';
+import { newsletterResearchSchema, newsletterWindowInputSchema } from '../schemas/newsletter.schema.ts';
 import { githubReleaseSchema } from '../schemas/release.schema.ts';
 
 const newsletterWindowSchema = z.object({
@@ -42,11 +41,6 @@ const newsletterBlogResearchSchema = newsletterContributorResearchSchema.extend(
   blogPosts: z.array(blogPostSchema),
 });
 
-const newsletterResearchSchema = newsletterBlogResearchSchema.extend({
-  eventSource: z.literal('local-events-json'),
-  mostRecentPastEvent: eventCollectionSchema.shape.mostRecentPastEvent,
-  nextUpcomingEvent: eventCollectionSchema.shape.nextUpcomingEvent,
-});
 
 const prepareNewsletterWindow = createStep({
   id: 'prepare-newsletter-window',

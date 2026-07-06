@@ -2,7 +2,7 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 7 adds a structured newsletter drafting agent on top of the workflow research pipeline.
+Milestone 8 adds Notion publishing on top of the workflow research and drafting pipeline.
 
 ## What exists in Milestone 7
 
@@ -15,6 +15,7 @@ Milestone 7 adds a structured newsletter drafting agent on top of the workflow r
 - local mock Luma-style event collection from `data/events.json`
 - workflow runner script that writes `output/newsletter-data.json`
 - newsletter draft runner script that writes `output/newsletter-draft.json`
+- Notion publisher script that creates a child page under a configured parent page and writes `output/notion-publish-result.json`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
 
@@ -36,6 +37,7 @@ For Milestone 7:
 - `GOOGLE_API_KEY` is required for newsletter drafting with Gemini
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
+- `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing
 - `npm test` does not require live API access
 - `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
 
@@ -122,6 +124,14 @@ npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
 
 This writes `output/newsletter-draft.json`.
 
+Publish the generated draft and workflow metadata to Notion:
+
+```bash
+npm run publish:notion
+```
+
+This reads `output/newsletter-draft.json` and `output/newsletter-data.json`, creates a child page under `NOTION_PAGE_ID`, and writes `output/notion-publish-result.json`.
+
 Build the app:
 
 ```bash
@@ -158,4 +168,4 @@ src/
 ## Next milestones
 
 - React Email rendering
-- Notion publishing
+- Notion editing sync

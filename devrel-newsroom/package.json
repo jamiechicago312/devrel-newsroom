@@ -19,7 +19,8 @@
     "collect:blog": "node --experimental-strip-types scripts/collect-blog.ts",
     "collect:events": "node --experimental-strip-types scripts/collect-events.ts",
     "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts",
-    "generate:newsletter": "node --experimental-strip-types scripts/generate-newsletter.ts"
+    "generate:newsletter": "node --experimental-strip-types scripts/generate-newsletter.ts",
+    "publish:notion": "node --experimental-strip-types scripts/publish-notion.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",

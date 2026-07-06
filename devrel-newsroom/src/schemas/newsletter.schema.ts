@@ -1,4 +1,8 @@
 import { z } from 'zod';
+import { blogPostSchema } from './blog.schema.ts';
+import { firstTimeContributorSchema, githubPullRequestSchema } from './contributor.schema.ts';
+import { eventCollectionSchema } from './event.schema.ts';
+import { githubReleaseSchema } from './release.schema.ts';
 
 export const newsletterWindowInputSchema = z.object({
   sourceProject: z.string().min(1).default('withastro/astro'),
@@ -24,5 +28,26 @@ export const newsletterDraftSchema = z.object({
   closing: z.string().min(1),
 });
 
+export const newsletterResearchSchema = z.object({
+  sourceProject: z.string().min(1),
+  startDate: z.string().date(),
+  endDate: z.string().date(),
+  windowDays: z.number().int().nonnegative(),
+  status: z.literal('ready'),
+  releaseCount: z.number().int().nonnegative(),
+  releases: z.array(githubReleaseSchema),
+  mergedPullRequestCount: z.number().int().nonnegative(),
+  mergedPullRequests: z.array(githubPullRequestSchema),
+  contributorCount: z.number().int().nonnegative(),
+  contributors: z.array(firstTimeContributorSchema),
+  blogSource: z.enum(['rss', 'tavily']),
+  blogPostCount: z.number().int().nonnegative(),
+  blogPosts: z.array(blogPostSchema),
+  eventSource: z.literal('local-events-json'),
+  mostRecentPastEvent: eventCollectionSchema.shape.mostRecentPastEvent,
+  nextUpcomingEvent: eventCollectionSchema.shape.nextUpcomingEvent,
+});
+
 export type NewsletterWindowInput = z.infer<typeof newsletterWindowInputSchema>;
 export type NewsletterDraft = z.infer<typeof newsletterDraftSchema>;
+export type NewsletterResearch = z.infer<typeof newsletterResearchSchema>;
