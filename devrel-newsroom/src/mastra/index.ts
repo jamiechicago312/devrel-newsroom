@@ -1,3 +1,5 @@
+import { mkdirSync } from 'node:fs';
+import path from 'node:path';
 import { Mastra } from '@mastra/core/mastra';
 import { MastraCompositeStore } from '@mastra/core/storage';
 import { DuckDBStore } from '@mastra/duckdb';
@@ -12,6 +14,10 @@ import {
 import { newsletterWriterAgent } from '../agents/newsletter-writer.agent';
 import { newsletterWorkflow } from '../workflows/newsletter.workflow';
 
+const storageDir = path.resolve(import.meta.dirname, '..', '..', '.mastra', 'storage');
+
+mkdirSync(storageDir, { recursive: true });
+
 export const mastra = new Mastra({
   workflows: { newsletterWorkflow },
   agents: { newsletterWriterAgent },
@@ -19,10 +25,12 @@ export const mastra = new Mastra({
     id: 'newsroom-storage',
     default: new LibSQLStore({
       id: 'newsroom-libsql',
-      url: 'file:./mastra.db',
+      url: `file:${path.join(storageDir, 'mastra.db')}`,
     }),
     domains: {
-      observability: await new DuckDBStore().getStore('observability'),
+      observability: await new DuckDBStore({
+        path: path.join(storageDir, 'observability.duckdb'),
+      }).getStore('observability'),
     },
   }),
   logger: new PinoLogger({

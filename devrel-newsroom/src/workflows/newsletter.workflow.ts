@@ -1,6 +1,9 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows';
 import { z } from 'zod';
+import { readEnv } from '../lib/env';
+import { fetchGitHubReleases, filterReleasesByWindow } from '../lib/github';
 import { newsletterWindowInputSchema } from '../schemas/newsletter.schema';
+import { githubReleaseSchema } from '../schemas/release.schema';
 
 const newsletterWindowSchema = z.object({
   sourceProject: z.string(),
@@ -8,6 +11,11 @@ const newsletterWindowSchema = z.object({
   endDate: z.string().date(),
   windowDays: z.number().int().nonnegative(),
   status: z.literal('ready'),
+});
+
+const newsletterResearchSchema = newsletterWindowSchema.extend({
+  releaseCount: z.number().int().nonnegative(),
+  releases: z.array(githubReleaseSchema),
 });
 
 const prepareNewsletterWindow = createStep({
@@ -44,11 +52,46 @@ const prepareNewsletterWindow = createStep({
   },
 });
 
+const collectGitHubReleases = createStep({
+  id: 'collect-github-releases',
+  description: 'Collects published GitHub releases for the configured source project within the requested window.',
+  inputSchema: newsletterWindowSchema,
+  outputSchema: newsletterResearchSchema,
+  execute: async ({ inputData }) => {
+    if (!inputData) {
+      throw new Error('Input data is required');
+    }
+
+    const env = readEnv();
+    if (!env.GITHUB_TOKEN) {
+      throw new Error('GITHUB_TOKEN is required to collect live GitHub releases');
+    }
+
+    const releases = await fetchGitHubReleases({
+      sourceProject: inputData.sourceProject,
+      githubToken: env.GITHUB_TOKEN,
+    });
+
+    const filteredReleases = filterReleasesByWindow({
+      releases,
+      startDate: inputData.startDate,
+      endDate: inputData.endDate,
+    });
+
+    return {
+      ...inputData,
+      releaseCount: filteredReleases.length,
+      releases: filteredReleases,
+    };
+  },
+});
+
 export const newsletterWorkflow = createWorkflow({
   id: 'newsletter-workflow',
   inputSchema: newsletterWindowInputSchema,
-  outputSchema: newsletterWindowSchema,
+  outputSchema: newsletterResearchSchema,
 })
-  .then(prepareNewsletterWindow);
+  .then(prepareNewsletterWindow)
+  .then(collectGitHubReleases);
 
 newsletterWorkflow.commit();
