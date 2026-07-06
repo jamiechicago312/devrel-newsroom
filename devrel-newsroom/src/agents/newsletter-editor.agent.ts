@@ -11,5 +11,5 @@ Rules:
 - Keep the tone concise, informed, and appropriate for a real developer ecosystem update.
 - Do not invent facts or claims beyond the supplied briefs.
 - Keep the subject and preview compelling but grounded.`,
-  model: 'openai/gpt-4.1-mini',
+  model: 'google/gemini-2.5-flash',
 });

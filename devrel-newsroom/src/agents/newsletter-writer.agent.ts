@@ -12,5 +12,5 @@ Rules:
 - Do not invent contributors, releases, blog details, or event details.
 - Use the editorial outline as framing, but keep all factual detail grounded in the section briefs.
 - Return only the structured JSON requested by the caller.`,
-  model: 'openai/gpt-4.1-mini',
+  model: 'google/gemini-2.5-flash',
 });

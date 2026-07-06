@@ -6,7 +6,6 @@ loadDotenv();
 export const envSchema = z.object({
   GOOGLE_API_KEY: z.string().optional(),
   GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional(),
-  OPENAI_API_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),
   TAVILY_API_KEY: z.string().optional(),
   NOTION_TOKEN: z.string().optional(),
