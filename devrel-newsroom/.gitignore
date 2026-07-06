@@ -10,3 +10,5 @@ dist
 .vercel
 *.duckdb
 *.duckdb.wal
+!output/newsletter.html
+!output/newsletter.json

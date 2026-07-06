@@ -2,9 +2,9 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 8 adds Notion publishing on top of the workflow research and drafting pipeline.
+Milestone 8 adds a React Email rendering step on top of the workflow research, drafting, and publishing pipeline.
 
-## What exists in Milestone 7
+## What exists currently
 
 - project-specific Mastra entrypoint with stable local runtime storage
 - newsletter workflow that orchestrates release, contributor, blog, and event collection
@@ -15,6 +15,7 @@ Milestone 8 adds Notion publishing on top of the workflow research and drafting 
 - local mock Luma-style event collection from `data/events.json`
 - workflow runner script that writes `output/newsletter-data.json`
 - newsletter draft runner script that writes `output/newsletter-draft.json`
+- newsletter email renderer that writes `output/newsletter.html` and `output/newsletter.json`
 - Notion publisher script that creates a child page under a configured parent page and writes `output/notion-publish-result.json`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
@@ -124,6 +125,14 @@ npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
 
 This writes `output/newsletter-draft.json`.
 
+Render the React Email newsletter artifacts:
+
+```bash
+npm run render:newsletter
+```
+
+This reads `output/newsletter-draft.json` and `output/newsletter-data.json`, then writes `output/newsletter.html` and `output/newsletter.json`.
+
 Publish the generated draft and workflow metadata to Notion:
 
 ```bash
@@ -167,5 +176,4 @@ src/
 
 ## Next milestones
 
-- React Email rendering
 - Notion editing sync

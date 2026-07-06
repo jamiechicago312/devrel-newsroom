@@ -21,6 +21,8 @@ import { newsletterDraftSchema, newsletterResearchSchema, newsletterWindowInputS
 import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
 import { buildNotionNewsletterPagePayload } from '../src/lib/notion.ts';
 import { renderNewsletterBodyMarkdown } from '../src/lib/newsletter.ts';
+import { renderNewsletterEmail } from '../src/lib/email.ts';
+import { newsletterEmailArtifactSchema } from '../src/schemas/email.schema.ts';
 
 const sampleWindow = newsletterWindowInputSchema.parse({
   sourceProject: 'withastro/astro',
@@ -220,6 +222,12 @@ const sampleNotionPayload = buildNotionNewsletterPagePayload({
   generatedAt: '2026-07-06T00:00:00.000Z',
 });
 
+const sampleEmailArtifact = newsletterEmailArtifactSchema.parse(await renderNewsletterEmail({
+  draft: sampleDraft,
+  research: sampleResearch,
+  generatedAt: '2026-07-06T00:00:00.000Z',
+}));
+
 const sampleNewsletterBody = renderNewsletterBodyMarkdown(sampleDraft);
 
 const env = readEnv();
@@ -241,6 +249,8 @@ console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.tit
 console.log(`Sample newsletter subject: ${sampleDraft.subject}`);
 console.log(`Sample newsletter body lines: ${sampleNewsletterBody.split('\n').length}`);
 console.log(`Sample Notion block count: ${sampleNotionPayload.children.length}`);
+console.log(`Sample email HTML length: ${sampleEmailArtifact.html.length}`);
+console.log(`Sample email text length: ${sampleEmailArtifact.text.length}`);
 console.log(`Blog source URL: ${astroBlogConfig.blogUrl}`);
 console.log(`Blog RSS URL: ${astroBlogConfig.rssUrl}`);
 console.log(`Configured env keys: ${configuredKeys.length ? configuredKeys.join(', ') : 'none'}`);
