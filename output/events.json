@@ -1,0 +1,28 @@
+{
+  "sourceProject": "withastro/astro",
+  "startDate": "2026-06-28",
+  "endDate": "2026-07-05",
+  "source": "local-events-json",
+  "mostRecentPastEvent": {
+    "id": "astro-community-call-june-2026",
+    "title": "Astro Community Call - June 2026",
+    "url": "https://lu.ma/astro-community-call-june-2026",
+    "startAt": "2026-06-24T17:00:00Z",
+    "endAt": "2026-06-24T18:00:00Z",
+    "startDate": "2026-06-24",
+    "endDate": "2026-06-24",
+    "location": "Online",
+    "summary": "Community Q&A and project updates from the Astro team."
+  },
+  "nextUpcomingEvent": {
+    "id": "astro-launch-week-july-2026",
+    "title": "Astro Launch Week - July 2026",
+    "url": "https://lu.ma/astro-launch-week-july-2026",
+    "startAt": "2026-07-08T16:00:00Z",
+    "endAt": "2026-07-08T17:30:00Z",
+    "startDate": "2026-07-08",
+    "endDate": "2026-07-08",
+    "location": "Online",
+    "summary": "Launch Week kickoff with demos, announcements, and community highlights."
+  }
+}

@@ -1,38 +1,15 @@
-# Environment
+output.txt
+node_modules
+dist
+.mastra
+.env.development
 .env
-.env.local
-.env.*.local
-
-# Dependencies
-node_modules/
-
-# Build
-dist/
-build/
-
-# Output
-output/
-*.html
-*.json
-!devrel-newsroom/package.json
-!devrel-newsroom/package-lock.json
-!devrel-newsroom/tsconfig.json
-!devrel-newsroom/output/
-!devrel-newsroom/output/.gitkeep
-
-# Logs
-*.log
-
-# OS
-.DS_Store
-
-# Editors
-.vscode/
-.idea/
-
-# Testing
-coverage/
-
-# Misc
-.tmp/
-.cache/
+*.db
+*.db-*
+.netlify
+.vercel
+*.duckdb
+*.duckdb.wal
+!output/newsletter.html
+!output/newsletter.json
+!output/newsletter-agent-report.json
