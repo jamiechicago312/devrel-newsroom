@@ -20,7 +20,8 @@
     "collect:events": "node --experimental-strip-types scripts/collect-events.ts",
     "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts",
     "generate:newsletter": "node --experimental-strip-types scripts/generate-newsletter.ts",
-    "publish:notion": "node --experimental-strip-types scripts/publish-notion.ts"
+    "publish:notion": "node --experimental-strip-types scripts/publish-notion.ts",
+    "render:newsletter": "node --experimental-strip-types scripts/render-newsletter.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",
@@ -30,11 +31,17 @@
     "@mastra/loggers": "^1.2.0",
     "@mastra/memory": "^1.22.1",
     "@mastra/observability": "^1.15.2",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.0.10",
     "dotenv": "^17.2.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "mastra": "^1.18.0",
     "typescript": "^6.0.3"
   }
