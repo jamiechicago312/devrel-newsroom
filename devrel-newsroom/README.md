@@ -2,17 +2,17 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 2 adds live GitHub release collection for Astro on top of the Milestone 1 newsroom scaffold.
+Milestone 3 adds merged pull request collection and first-time contributor detection for Astro on top of the Milestone 2 newsroom scaffold.
 
-## What exists in Milestone 2
+## What exists in Milestone 3
 
-- project-specific Mastra entrypoint
-- initial newsletter agent placeholder
-- newsletter workflow with a live GitHub release collection step
-- shared newsletter and release schemas
-- GitHub release collection utilities and CLI script
+- project-specific Mastra entrypoint with stable local runtime storage
+- newsletter workflow with live GitHub release collection
+- newsletter workflow step for merged pull request collection and first-time contributor detection
+- shared newsletter, release, and contributor schemas
+- GitHub release and contributor collection utilities and CLI scripts
 - smoke script for local verification without network access
-- clean `data/` and `output/` directories for future milestones
+- clean `output/` directory for generated milestone artifacts
 
 ## Requirements
 
@@ -27,9 +27,9 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For Milestone 2:
+For Milestone 3:
 
-- `GITHUB_TOKEN` is required for live release collection and workflow runs that hit the GitHub API
+- `GITHUB_TOKEN` is required for live release collection, contributor collection, and workflow runs that hit the GitHub API
 - `npm test` does not require live API access
 - `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
 
@@ -66,13 +66,23 @@ npm test
 The current `test` script runs:
 
 - TypeScript typechecking
-- a smoke script that validates the release collection scaffolding without opening Mastra Studio
+- a smoke script that validates the release and contributor scaffolding without opening Mastra Studio
 
 Collect live releases for a specific window:
 
 ```bash
 npm run collect:releases -- withastro/astro 2026-07-01 2026-07-05
 ```
+
+This writes `output/releases.json`.
+
+Collect merged pull requests and first-time contributors for a specific window:
+
+```bash
+npm run collect:contributors -- withastro/astro 2026-07-01 2026-07-05
+```
+
+This writes `output/contributors.json`.
 
 Build the app:
 
@@ -96,7 +106,6 @@ If port `4111` is already in use, Mastra may choose another port. The terminal o
 ## Project layout
 
 ```txt
-data/
 output/
 scripts/
 src/
@@ -109,7 +118,6 @@ src/
 
 ## Next milestones
 
-- PR and contributor collection
 - blog discovery
 - mock events
 - newsletter drafting

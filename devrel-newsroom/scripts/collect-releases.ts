@@ -1,6 +1,9 @@
+import { mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
 import { readEnv } from '../src/lib/env.ts';
 import { fetchGitHubReleases, filterReleasesByWindow } from '../src/lib/github.ts';
 import { newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
+import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
 
 const sourceProject = process.argv[2] ?? 'withastro/astro';
 const startDate = process.argv[3];
@@ -35,10 +38,16 @@ const matchingReleases = filterReleasesByWindow({
   endDate: windowInput.endDate,
 });
 
-console.log(JSON.stringify({
+const collection = githubReleaseCollectionSchema.parse({
   sourceProject: windowInput.sourceProject,
   startDate: windowInput.startDate,
   endDate: windowInput.endDate,
   releaseCount: matchingReleases.length,
   releases: matchingReleases,
-}, null, 2));
+});
+
+const outputPath = path.resolve(import.meta.dirname, '..', 'output', 'releases.json');
+mkdirSync(path.dirname(outputPath), { recursive: true });
+writeFileSync(outputPath, `${JSON.stringify(collection, null, 2)}\n`);
+
+console.log(`Wrote ${collection.releaseCount} releases to ${outputPath}`);
