@@ -1,43 +1,34 @@
 # DevRel Newsroom
 
-DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
+[![Portfolio](https://img.shields.io/badge/Portfolio-jamiechicago.com-111111?logo=googlechrome&logoColor=white)](https://jamiechicago.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Jamie%20Steinberg-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/steinbergjamie)
+[![X](https://img.shields.io/badge/X-@jamiechicago312-000000?logo=x&logoColor=white)](https://x.com/jamiechicago312)
+[![YouTube](https://img.shields.io/badge/YouTube-@jamiechicago312-FF0000?logo=youtube&logoColor=white)](https://youtube.com/@jamiechicago312)
 
-Milestone 10a makes the drafting layer deliberately Mastra-forward by coordinating multiple specialized Gemini agents through a dedicated draft workflow.
+DevRel Newsroom is a Mastra-based TypeScript app that turns real open-source activity into a review-ready developer newsletter.
 
-## What exists currently
+I built it to solve a practical DevRel problem: the updates developers actually care about are usually spread across GitHub releases, merged pull requests, blog posts, and community events. Pulling that together manually is slow, and generic summaries are usually too vague to be useful. This project shows how an agent workflow can gather the signal, draft a credible recap, and leave a human editor with something worth refining instead of starting from a blank page.
 
-- project-specific Mastra entrypoint with stable local runtime storage
-- newsletter workflow that orchestrates release, contributor, blog, and event collection
-- multi-agent newsletter draft workflow that coordinates release, contributor, community, editorial, writer, and QA agents
-- specialized Mastra agents for release analysis, contributor spotlighting, community curation, editorial framing, final assembly, and QA review, all running on Gemini Flash
-- shared newsletter, research, email, and agent-brief schemas
-- GitHub release and contributor collection utilities and CLI scripts
-- Astro blog collection via RSS with Tavily fallback when RSS has no matching posts
-- local mock Luma-style event collection from `data/events.json`
-- workflow runner script that writes `output/newsletter-data.json`
-- newsletter draft runner script that writes `output/newsletter-draft.json`
-- multi-agent report artifact that writes `output/newsletter-agent-report.json`
-- newsletter email renderer that writes `output/newsletter.html` and `output/newsletter.json`
-- Notion publisher script that creates a child page under a configured parent page and writes `output/notion-publish-result.json`
-- Notion sync-back script that reads an edited Notion page and writes `output/newsletter-edited.md`
-- smoke script for local verification without network access
-- clean `output/` directory for generated milestone artifacts
+For developers, the point is bigger than newsletters. The same pattern works for release digests, OSS project roundups, internal engineering updates, launch recaps, or community reporting. The core question behind the project is simple: why does this matter to developers, and how can they use the result?
 
-## Agent roles
+## Why This Stack
 
-- `release-analyst` uses Gemini Flash to turn release data into a grounded release highlights section
-- `contributor-spotlight` uses Gemini Flash to turn merged PR data into first-time contributor highlights
-- `community-curator` uses Gemini Flash to curate the latest blog and event sections
-- `newsletter-editor` uses Gemini Flash to create the subject line, preview text, intro, and closing
-- `newsletter-writer` uses Gemini Flash to assemble the final structured newsletter draft from the specialized briefs
-- `newsletter-qa` uses Gemini Flash to review the final draft and return a structured QA report
+- `Mastra` provides the workflow and agent framework so the collection, drafting, and QA stages are explicit, inspectable, and easy to demo.
+- `TypeScript` keeps the schemas and handoffs strict across collectors, agents, rendering, and publishing.
+- `Gemini Flash` keeps iterative multi-agent drafting affordable while staying fast enough for repeated runs.
+- `React Email` turns the final draft into a deliverable email artifact instead of leaving the output as raw JSON.
+- `Notion` makes it easy to push the draft into a real editorial workflow and pull edited copy back out.
 
-## Requirements
+The main implementation decision was to optimize for usefulness over novelty. Each workflow stage should help a developer answer what changed, why it matters, and what they should read or do next.
+
+## Quickstart
+
+### Requirements
 
 - Node.js 22.13.0 or newer
 - npm
 
-## Environment setup
+### Setup
 
 Copy `.env.example` to `.env`.
 
@@ -45,16 +36,12 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For the current milestones:
+Environment notes:
 
 - `GOOGLE_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is required for the Gemini-backed agent pipeline
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
 - `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing and sync-back
-- `npm test` does not require live API access
-- `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
-
-## Run locally
 
 Install dependencies:
 
@@ -62,32 +49,47 @@ Install dependencies:
 npm install
 ```
 
-Start Mastra Studio for manual inspection:
+### Start locally
+
+Run Mastra from the repository root:
 
 ```bash
 npm run dev
 ```
 
-Mastra Studio should be available at `http://localhost:4111`.
+Mastra Studio should be available at `http://localhost:4111` unless that port is already in use.
 
-## Test locally
+### Verify locally
 
-Run the smoke script:
-
-```bash
-npm run smoke
-```
-
-Run the current test gate:
+Run the automated gate:
 
 ```bash
 npm test
 ```
 
-The current `test` script runs:
+Build the production bundle:
 
-- TypeScript typechecking
-- a smoke script that validates the release, contributor, blog, event, draft-source, email render, and Notion sync-back extraction paths without opening Mastra Studio
+```bash
+npm run build
+```
+
+`npm test` runs TypeScript typechecking plus a smoke path that validates the release, contributor, blog, event, draft-source, email render, and Notion sync-back flows without opening Mastra Studio.
+
+## How Developers Can Use This
+
+- generate a repeatable newsletter workflow from real project activity instead of manually assembling updates from several tools
+- adapt the same pattern for release digests, launch notes, community roundups, or internal engineering newsletters
+- demo Mastra with a concrete multi-agent use case where each agent has a narrow job and produces visible artifacts
+
+## What It Produces
+
+- `output/newsletter-data.json` with collected source material
+- `output/newsletter-draft.json` with the structured draft
+- `output/newsletter-agent-report.json` with the multi-agent report
+- `output/newsletter.html` and `output/newsletter.json` with rendered email artifacts
+- `output/notion-publish-result.json` and `output/newsletter-edited.md` for the Notion publishing loop
+
+## Workflow Commands
 
 Collect live releases for a specific window:
 
@@ -95,15 +97,11 @@ Collect live releases for a specific window:
 npm run collect:releases -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-This writes `output/releases.json`.
-
 Collect merged pull requests and first-time contributors for a specific window:
 
 ```bash
 npm run collect:contributors -- withastro/astro 2026-06-28 2026-07-05
 ```
-
-This writes `output/contributors.json`.
 
 Collect Astro blog posts for a specific window:
 
@@ -111,15 +109,11 @@ Collect Astro blog posts for a specific window:
 npm run collect:blog -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-This writes `output/blog-posts.json`.
-
 Collect the local mock event summary for a specific window:
 
 ```bash
 npm run collect:events -- withastro/astro 2026-06-28 2026-07-05
 ```
-
-This writes `output/events.json`.
 
 Run the full newsletter research workflow:
 
@@ -127,15 +121,11 @@ Run the full newsletter research workflow:
 npm run workflow:newsletter -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-This writes `output/newsletter-data.json`.
-
 Generate the structured newsletter draft through the multi-agent pipeline:
 
 ```bash
 npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
 ```
-
-This writes `output/newsletter-draft.json` and `output/newsletter-agent-report.json`.
 
 Render the React Email newsletter artifacts:
 
@@ -143,15 +133,11 @@ Render the React Email newsletter artifacts:
 npm run render:newsletter
 ```
 
-This reads `output/newsletter-draft.json` and `output/newsletter-data.json`, then writes `output/newsletter.html` and `output/newsletter.json`.
-
 Publish the generated draft and workflow metadata to Notion:
 
 ```bash
 npm run publish:notion
 ```
-
-This reads `output/newsletter-draft.json` and `output/newsletter-data.json`, creates a child page under `NOTION_PAGE_ID`, and writes `output/notion-publish-result.json`.
 
 Sync the edited newsletter body back from Notion:
 
@@ -159,28 +145,16 @@ Sync the edited newsletter body back from Notion:
 npm run sync:notion
 ```
 
-This reads `output/notion-publish-result.json`, fetches the published page from Notion, extracts the `Full Newsletter Body` section, and writes `output/newsletter-edited.md`.
+## Agent Roles
 
-Build the app:
+- `release-analyst` turns release data into a grounded release highlights section
+- `contributor-spotlight` turns merged PR data into first-time contributor highlights
+- `community-curator` curates the latest blog and event sections
+- `newsletter-editor` creates the subject line, preview text, intro, and closing
+- `newsletter-writer` assembles the final structured newsletter draft from the specialized briefs
+- `newsletter-qa` reviews the final draft and returns a structured QA report
 
-```bash
-npm run build
-```
-
-## Run from repository root
-
-From the repository root:
-
-```bash
-npm test
-npm run dev
-```
-
-If port `4111` is already in use, Mastra may choose another port. The terminal output will show the active local URL.
-
-`npm test` does not open Mastra Studio and should not be used as a UI verification step.
-
-## Project layout
+## Project Layout
 
 ```txt
 data/
@@ -193,7 +167,3 @@ src/
   schemas/
   workflows/
 ```
-
-## Repository layout
-
-The repository root is the active Mastra app root. No nested generated app directory is required.
