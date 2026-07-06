@@ -129,6 +129,7 @@ const collectGitHubContributors = createStep({
       sourceProject: inputData.sourceProject,
       startDate: inputData.startDate,
       githubToken: env.GITHUB_TOKEN,
+      maxPages: 20,
     });
 
     const filteredPullRequests = filterPullRequestsByWindow({
@@ -140,6 +141,7 @@ const collectGitHubContributors = createStep({
     const contributors = await identifyFirstTimeContributors({
       sourceProject: inputData.sourceProject,
       pullRequests: filteredPullRequests,
+      historicalPullRequests: mergedPullRequests,
       githubToken: env.GITHUB_TOKEN,
     });
 

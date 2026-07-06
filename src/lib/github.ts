@@ -66,6 +66,54 @@ function trimReleaseSummary(body: string | null | undefined): string {
   return collapsed.length <= 280 ? collapsed : `${collapsed.slice(0, 277).trimEnd()}...`;
 }
 
+function getRetryDelayMs(response: Response, attempt: number): number {
+  const retryAfterSeconds = response.headers.get('retry-after');
+  if (retryAfterSeconds) {
+    const parsedSeconds = Number(retryAfterSeconds);
+    if (Number.isFinite(parsedSeconds) && parsedSeconds > 0) {
+      return parsedSeconds * 1000;
+    }
+  }
+
+  const rateLimitResetSeconds = response.headers.get('x-ratelimit-reset');
+  if (rateLimitResetSeconds) {
+    const parsedReset = Number(rateLimitResetSeconds);
+    if (Number.isFinite(parsedReset) && parsedReset > 0) {
+      return Math.max(parsedReset * 1000 - Date.now(), 1000);
+    }
+  }
+
+  return Math.min(2000 * 2 ** attempt, 15000);
+}
+
+async function wait(ms: number): Promise<void> {
+  await new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchWithGitHubRetry(
+  url: string,
+  init: RequestInit,
+  fetchImpl: typeof fetch,
+  retries = 3,
+): Promise<Response> {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await fetchImpl(url, init);
+
+    if (response.ok) {
+      return response;
+    }
+
+    const shouldRetry = (response.status === 403 || response.status === 429) && attempt < retries;
+    if (!shouldRetry) {
+      return response;
+    }
+
+    await wait(getRetryDelayMs(response, attempt));
+  }
+
+  throw new Error('GitHub request retry loop exhausted unexpectedly');
+}
+
 export function normalizeGitHubRelease(record: GitHubReleaseApiRecord): GitHubRelease {
   if (!record.published_at) {
     throw new Error(`Release ${record.tag_name} is missing published_at`);
@@ -210,9 +258,13 @@ async function hasMergedPullRequestBefore(input: {
   const query = `repo:${owner}/${repo} is:pr is:merged author:${input.authorLogin} merged:<${input.mergedAt}`;
   const url = `${githubApiBaseUrl}/search/issues?q=${encodeURIComponent(query)}&per_page=1`;
 
-  const response = await fetchImpl(url, {
-    headers: buildGitHubHeaders(input.githubToken),
-  });
+  const response = await fetchWithGitHubRetry(
+    url,
+    {
+      headers: buildGitHubHeaders(input.githubToken),
+    },
+    fetchImpl,
+  );
 
   if (!response.ok) {
     throw new Error(`GitHub contributor search failed with ${response.status} ${response.statusText}`);
@@ -225,6 +277,7 @@ async function hasMergedPullRequestBefore(input: {
 export async function identifyFirstTimeContributors(input: {
   sourceProject: string;
   pullRequests: GitHubPullRequest[];
+  historicalPullRequests?: GitHubPullRequest[];
   githubToken?: string;
   fetchImpl?: typeof fetch;
   hasPriorMergedPullRequest?: (args: {
@@ -238,6 +291,9 @@ export async function identifyFirstTimeContributors(input: {
   const pullRequests = [...input.pullRequests].sort((left, right) => {
     return left.mergedAt.localeCompare(right.mergedAt) || left.number - right.number;
   });
+  const historicalPullRequests = [...(input.historicalPullRequests ?? input.pullRequests)].sort((left, right) => {
+    return left.mergedAt.localeCompare(right.mergedAt) || left.number - right.number;
+  });
 
   for (const pullRequest of pullRequests) {
     const authorLogin = pullRequest.authorLogin.trim();
@@ -246,19 +302,25 @@ export async function identifyFirstTimeContributors(input: {
       continue;
     }
 
-    const hasPriorMergedPullRequest = input.hasPriorMergedPullRequest
-      ? await input.hasPriorMergedPullRequest({
-          sourceProject: input.sourceProject,
-          authorLogin,
-          mergedAt: pullRequest.mergedAt,
-        })
-      : await hasMergedPullRequestBefore({
-          sourceProject: input.sourceProject,
-          authorLogin,
-          mergedAt: pullRequest.mergedAt,
-          githubToken: input.githubToken,
-          fetchImpl: input.fetchImpl,
-        });
+    const hasPriorInFetchedHistory = historicalPullRequests.some(candidate => {
+      return candidate.authorLogin.trim() === authorLogin && candidate.mergedAt < pullRequest.mergedAt;
+    });
+
+    const hasPriorMergedPullRequest = hasPriorInFetchedHistory
+      ? true
+      : input.hasPriorMergedPullRequest
+        ? await input.hasPriorMergedPullRequest({
+            sourceProject: input.sourceProject,
+            authorLogin,
+            mergedAt: pullRequest.mergedAt,
+          })
+        : await hasMergedPullRequestBefore({
+            sourceProject: input.sourceProject,
+            authorLogin,
+            mergedAt: pullRequest.mergedAt,
+            githubToken: input.githubToken,
+            fetchImpl: input.fetchImpl,
+          });
 
     seenAuthors.add(authorLogin);
 
