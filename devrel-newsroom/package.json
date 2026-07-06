@@ -16,7 +16,8 @@
     "test": "npm run typecheck && npm run smoke",
     "collect:releases": "node --experimental-strip-types scripts/collect-releases.ts",
     "collect:contributors": "node --experimental-strip-types scripts/collect-contributors.ts",
-    "collect:blog": "node --experimental-strip-types scripts/collect-blog.ts"
+    "collect:blog": "node --experimental-strip-types scripts/collect-blog.ts",
+    "collect:events": "node --experimental-strip-types scripts/collect-events.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",

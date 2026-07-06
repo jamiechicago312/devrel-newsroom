@@ -1,0 +1,29 @@
+[
+  {
+    "id": "astro-community-call-june-2026",
+    "title": "Astro Community Call - June 2026",
+    "url": "https://lu.ma/astro-community-call-june-2026",
+    "startAt": "2026-06-24T17:00:00Z",
+    "endAt": "2026-06-24T18:00:00Z",
+    "location": "Online",
+    "summary": "Community Q&A and project updates from the Astro team."
+  },
+  {
+    "id": "astro-launch-week-july-2026",
+    "title": "Astro Launch Week - July 2026",
+    "url": "https://lu.ma/astro-launch-week-july-2026",
+    "startAt": "2026-07-08T16:00:00Z",
+    "endAt": "2026-07-08T17:30:00Z",
+    "location": "Online",
+    "summary": "Launch Week kickoff with demos, announcements, and community highlights."
+  },
+  {
+    "id": "astro-contributor-office-hours-july-2026",
+    "title": "Astro Contributor Office Hours",
+    "url": "https://lu.ma/astro-contributor-office-hours-july-2026",
+    "startAt": "2026-07-15T18:00:00Z",
+    "endAt": "2026-07-15T19:00:00Z",
+    "location": "Online",
+    "summary": "Contributor support session for docs, triage, and first PR questions."
+  }
+]
