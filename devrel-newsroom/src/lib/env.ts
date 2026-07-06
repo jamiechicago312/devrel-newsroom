@@ -1,4 +1,7 @@
+import { config as loadDotenv } from 'dotenv';
 import { z } from 'zod';
+
+loadDotenv();
 
 export const envSchema = z.object({
   GOOGLE_API_KEY: z.string().optional(),

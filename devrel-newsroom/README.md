@@ -2,16 +2,17 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 5 adds a local mock event source on top of the release, contributor, and blog collection scaffold.
+Milestone 6 adds a runnable Mastra workflow that orchestrates the current collection stages into one structured newsletter research artifact.
 
-## What exists in Milestone 5
+## What exists in Milestone 6
 
 - project-specific Mastra entrypoint with stable local runtime storage
-- newsletter workflow with live GitHub release collection and contributor detection
+- newsletter workflow that orchestrates release, contributor, blog, and event collection
 - shared newsletter, release, contributor, blog, and event schemas
 - GitHub release and contributor collection utilities and CLI scripts
 - Astro blog collection via RSS with Tavily fallback when RSS has no matching posts
 - local mock Luma-style event collection from `data/events.json`
+- workflow runner script that writes `output/newsletter-data.json`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
 
@@ -28,9 +29,9 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For Milestone 5:
+For Milestone 6:
 
-- `GITHUB_TOKEN` is required for live release and contributor collection
+- `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
 - `npm test` does not require live API access
 - `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
@@ -101,6 +102,14 @@ npm run collect:events -- withastro/astro 2026-06-28 2026-07-05
 ```
 
 This writes `output/events.json`.
+
+Run the full newsletter research workflow:
+
+```bash
+npm run workflow:newsletter -- withastro/astro 2026-06-28 2026-07-05
+```
+
+This writes `output/newsletter-data.json`.
 
 Build the app:
 

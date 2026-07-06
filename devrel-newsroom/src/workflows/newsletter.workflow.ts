@@ -1,16 +1,20 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows';
 import { z } from 'zod';
-import { readEnv } from '../lib/env';
+import { collectAstroBlogPosts } from '../lib/blog.ts';
+import { readEnv } from '../lib/env.ts';
+import { loadMockEvents, selectNewsletterEvents } from '../lib/events.ts';
 import {
   fetchGitHubReleases,
   fetchMergedPullRequests,
   filterPullRequestsByWindow,
   filterReleasesByWindow,
   identifyFirstTimeContributors,
-} from '../lib/github';
-import { githubContributorCollectionSchema, githubPullRequestSchema, firstTimeContributorSchema } from '../schemas/contributor.schema';
-import { newsletterWindowInputSchema } from '../schemas/newsletter.schema';
-import { githubReleaseSchema } from '../schemas/release.schema';
+} from '../lib/github.ts';
+import { blogPostSchema } from '../schemas/blog.schema.ts';
+import { githubContributorCollectionSchema, githubPullRequestSchema, firstTimeContributorSchema } from '../schemas/contributor.schema.ts';
+import { eventCollectionSchema } from '../schemas/event.schema.ts';
+import { newsletterWindowInputSchema } from '../schemas/newsletter.schema.ts';
+import { githubReleaseSchema } from '../schemas/release.schema.ts';
 
 const newsletterWindowSchema = z.object({
   sourceProject: z.string(),
@@ -25,11 +29,23 @@ const newsletterReleaseResearchSchema = newsletterWindowSchema.extend({
   releases: z.array(githubReleaseSchema),
 });
 
-const newsletterResearchSchema = newsletterReleaseResearchSchema.extend({
+const newsletterContributorResearchSchema = newsletterReleaseResearchSchema.extend({
   mergedPullRequestCount: z.number().int().nonnegative(),
   mergedPullRequests: z.array(githubPullRequestSchema),
   contributorCount: z.number().int().nonnegative(),
   contributors: z.array(firstTimeContributorSchema),
+});
+
+const newsletterBlogResearchSchema = newsletterContributorResearchSchema.extend({
+  blogSource: z.enum(['rss', 'tavily']),
+  blogPostCount: z.number().int().nonnegative(),
+  blogPosts: z.array(blogPostSchema),
+});
+
+const newsletterResearchSchema = newsletterBlogResearchSchema.extend({
+  eventSource: z.literal('local-events-json'),
+  mostRecentPastEvent: eventCollectionSchema.shape.mostRecentPastEvent,
+  nextUpcomingEvent: eventCollectionSchema.shape.nextUpcomingEvent,
 });
 
 const prepareNewsletterWindow = createStep({
@@ -104,7 +120,7 @@ const collectGitHubContributors = createStep({
   id: 'collect-github-contributors',
   description: 'Collects merged pull requests in the window and identifies first-time contributors.',
   inputSchema: newsletterReleaseResearchSchema,
-  outputSchema: newsletterResearchSchema,
+  outputSchema: newsletterContributorResearchSchema,
   execute: async ({ inputData }) => {
     if (!inputData) {
       throw new Error('Input data is required');
@@ -153,6 +169,59 @@ const collectGitHubContributors = createStep({
   },
 });
 
+const collectBlogPosts = createStep({
+  id: 'collect-blog-posts',
+  description: 'Collects Astro blog posts for the requested window using RSS with Tavily fallback.',
+  inputSchema: newsletterContributorResearchSchema,
+  outputSchema: newsletterBlogResearchSchema,
+  execute: async ({ inputData }) => {
+    if (!inputData) {
+      throw new Error('Input data is required');
+    }
+
+    const env = readEnv();
+    const blogResult = await collectAstroBlogPosts({
+      startDate: inputData.startDate,
+      endDate: inputData.endDate,
+      tavilyApiKey: env.TAVILY_API_KEY,
+    });
+
+    return {
+      ...inputData,
+      blogSource: blogResult.source,
+      blogPostCount: blogResult.posts.length,
+      blogPosts: blogResult.posts,
+    };
+  },
+});
+
+const collectEvents = createStep({
+  id: 'collect-events',
+  description: 'Collects the most recent past event and next upcoming event from local mock event data.',
+  inputSchema: newsletterBlogResearchSchema,
+  outputSchema: newsletterResearchSchema,
+  execute: async ({ inputData }) => {
+    if (!inputData) {
+      throw new Error('Input data is required');
+    }
+
+    const events = loadMockEvents();
+    const eventCollection = selectNewsletterEvents({
+      events,
+      sourceProject: inputData.sourceProject,
+      startDate: inputData.startDate,
+      endDate: inputData.endDate,
+    });
+
+    return {
+      ...inputData,
+      eventSource: eventCollection.source,
+      mostRecentPastEvent: eventCollection.mostRecentPastEvent,
+      nextUpcomingEvent: eventCollection.nextUpcomingEvent,
+    };
+  },
+});
+
 export const newsletterWorkflow = createWorkflow({
   id: 'newsletter-workflow',
   inputSchema: newsletterWindowInputSchema,
@@ -160,6 +229,8 @@ export const newsletterWorkflow = createWorkflow({
 })
   .then(prepareNewsletterWindow)
   .then(collectGitHubReleases)
-  .then(collectGitHubContributors);
+  .then(collectGitHubContributors)
+  .then(collectBlogPosts)
+  .then(collectEvents);
 
 newsletterWorkflow.commit();

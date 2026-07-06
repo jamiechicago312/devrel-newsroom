@@ -17,7 +17,8 @@
     "collect:releases": "node --experimental-strip-types scripts/collect-releases.ts",
     "collect:contributors": "node --experimental-strip-types scripts/collect-contributors.ts",
     "collect:blog": "node --experimental-strip-types scripts/collect-blog.ts",
-    "collect:events": "node --experimental-strip-types scripts/collect-events.ts"
+    "collect:events": "node --experimental-strip-types scripts/collect-events.ts",
+    "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",
@@ -27,6 +28,7 @@
     "@mastra/loggers": "^1.2.0",
     "@mastra/memory": "^1.22.1",
     "@mastra/observability": "^1.15.2",
+    "dotenv": "^17.2.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
