@@ -4,6 +4,10 @@ import { firstTimeContributorSchema, githubPullRequestSchema } from './contribut
 import { eventCollectionSchema } from './event.schema.ts';
 import { githubReleaseSchema } from './release.schema.ts';
 
+const relaxedUrlSchema = z.string().min(1).refine(value => /^https?:\/\//.test(value), {
+  message: 'Expected an absolute http or https URL',
+});
+
 export const newsletterWindowInputSchema = z.object({
   sourceProject: z.string().min(1).default('withastro/astro'),
   startDate: z.string().date(),
@@ -13,7 +17,7 @@ export const newsletterWindowInputSchema = z.object({
 export const newsletterSectionSchema = z.object({
   title: z.string().min(1),
   summary: z.string().min(1),
-  links: z.array(z.string().url()).min(1),
+  links: z.array(relaxedUrlSchema).min(1),
 });
 
 export const newsletterDraftSchema = z.object({
@@ -50,14 +54,14 @@ export const newsletterResearchSchema = z.object({
 
 export const newsletterDraftingSourceSchema = z.object({
   sourceProject: z.string().min(1),
-  projectUrl: z.string().url(),
+  projectUrl: relaxedUrlSchema,
   startDate: z.string().date(),
   endDate: z.string().date(),
   releaseCount: z.number().int().nonnegative(),
   releases: z.array(z.object({
     name: z.string().min(1),
     tagName: z.string().min(1),
-    url: z.string().url(),
+    url: relaxedUrlSchema,
     publishedDate: z.string().date(),
     summary: z.string(),
   })),
@@ -66,12 +70,12 @@ export const newsletterDraftingSourceSchema = z.object({
     login: z.string().min(1),
     mergedDate: z.string().date(),
     pullRequestTitle: z.string().min(1),
-    pullRequestUrl: z.string().url(),
+    pullRequestUrl: relaxedUrlSchema,
   })),
   blogPostCount: z.number().int().nonnegative(),
   blogPosts: z.array(z.object({
     title: z.string().min(1),
-    url: z.string().url(),
+    url: relaxedUrlSchema,
     publishedDate: z.string().date(),
     summarySourceText: z.string().min(1),
   })),
