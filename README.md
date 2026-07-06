@@ -60,7 +60,7 @@ npm run dev
 
 Mastra Studio should be available at `http://localhost:4111` unless that port is already in use.
 
-In Mastra Studio, use `newsletter-pipeline-workflow` for the clean end-to-end demo flow. It takes only `sourceProject`, `startDate`, and `endDate`, then runs research collection, drafting, QA, and email rendering in one workflow run.
+In Mastra Studio, use `newsletter-pipeline-workflow` for the clean end-to-end demo flow. It takes only `sourceProject`, `startDate`, and `endDate`, then runs research collection, drafting, QA, email rendering, and artifact persistence in one workflow run. Each run now writes its files into a timestamped folder under `output/`.
 
 ### Verify locally
 
@@ -86,10 +86,10 @@ npm run build
 
 ## What It Produces
 
-- `output/newsletter-data.json` with collected source material
-- `output/newsletter-draft.json` with the structured draft
-- `output/newsletter-agent-report.json` with the multi-agent report
-- `output/newsletter.html` and `output/newsletter.json` with rendered email artifacts
+- `output/<timestamp>/newsletter-data.json` with collected source material
+- `output/<timestamp>/newsletter-draft.json` with the structured draft
+- `output/<timestamp>/newsletter-agent-report.json` with the multi-agent report
+- `output/<timestamp>/newsletter.html` and `output/<timestamp>/newsletter.json` with rendered email artifacts
 - `output/notion-publish-result.json` and `output/newsletter-edited.md` for the Notion publishing loop
 
 ## Workflow Commands
@@ -124,7 +124,7 @@ Run the full newsletter research workflow:
 npm run workflow:newsletter -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-Run the end-to-end newsletter pipeline from the CLI. This now performs research, drafting, QA, and rendering in one command:
+Run the end-to-end newsletter pipeline from the CLI. This now performs research, drafting, QA, rendering, and artifact persistence in one command:
 
 ```bash
 npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
