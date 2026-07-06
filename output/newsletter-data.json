@@ -1,0 +1,742 @@
+{
+  "sourceProject": "withastro/astro",
+  "startDate": "2026-06-28",
+  "endDate": "2026-07-05",
+  "windowDays": 8,
+  "status": "ready",
+  "releaseCount": 20,
+  "releases": [
+    {
+      "id": 348248843,
+      "tagName": "create-astro@5.2.2",
+      "name": "create-astro@5.2.2",
+      "url": "https://github.com/withastro/astro/releases/tag/create-astro%405.2.2",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:54Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17259](https://github.com/withastro/astro/pull/17259) [`ed6bea5`](https://github.com/withastro/astro/commit/ed6bea5ad9ff6036f7bc26cfbcb6f999142d16ef) Thanks [@astrobot-houston](https://github.com/astrobot-houston)! - Fixes proxy support by respecting `H..."
+    },
+    {
+      "id": 348248756,
+      "tagName": "astro@7.0.6",
+      "name": "astro@7.0.6",
+      "url": "https://github.com/withastro/astro/releases/tag/astro%407.0.6",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:42Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17261](https://github.com/withastro/astro/pull/17261) [`79aa99c`](https://github.com/withastro/astro/commit/79aa99c648b4b40b95a31d4a961b77074cf7963c) Thanks [@astrobot-houston](https://github.com/astrobot-houston)! - Fixes a false deprecation warning fo..."
+    },
+    {
+      "id": 348248988,
+      "tagName": "@astrojs/vercel@11.0.2",
+      "name": "@astrojs/vercel@11.0.2",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/vercel%4011.0.2",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:12Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348248781,
+      "tagName": "@astrojs/ts-plugin@1.10.10",
+      "name": "@astrojs/ts-plugin@1.10.10",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/ts-plugin%401.10.10",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:45Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17269](https://github.com/withastro/astro/pull/17269) [`c72d4f2`](https://github.com/withastro/astro/commit/c72d4f2d55054d65d574aa38925f6b05550f0ed1) Thanks [@matthewp](https://github.com/matthewp)! - Fixes \"Go To References\" from `.ts` files missing us..."
+    },
+    {
+      "id": 348249049,
+      "tagName": "@astrojs/solid-js@7.0.1",
+      "name": "@astrojs/solid-js@7.0.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/solid-js%407.0.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:18Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17270](https://github.com/withastro/astro/pull/17270) [`0142964`](https://github.com/withastro/astro/commit/014296439e084384432e13f2e5b192b0f595045d) Thanks [@FrancoKaddour](https://github.com/FrancoKaddour)! - Fix `@astrojs/solid-js` incorrectly claimi..."
+    },
+    {
+      "id": 348249016,
+      "tagName": "@astrojs/react@6.0.1",
+      "name": "@astrojs/react@6.0.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/react%406.0.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:15Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348248934,
+      "tagName": "@astrojs/preact@6.0.1",
+      "name": "@astrojs/preact@6.0.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/preact%406.0.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:06Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348248870,
+      "tagName": "@astrojs/node@11.0.2",
+      "name": "@astrojs/node@11.0.2",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/node%4011.0.2",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:57Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17252](https://github.com/withastro/astro/pull/17252) [`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c) Thanks [@matthewp](https://github.com/matthewp)! - Fixes trailing-slash handling for request paths that..."
+    },
+    {
+      "id": 348248807,
+      "tagName": "@astrojs/netlify@8.1.1",
+      "name": "@astrojs/netlify@8.1.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/netlify%408.1.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:48Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1 -   @astrojs/underscore-redirects@1.0.3"
+    },
+    {
+      "id": 348248959,
+      "tagName": "@astrojs/mdx@7.0.2",
+      "name": "@astrojs/mdx@7.0.2",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/mdx%407.0.2",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:09Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1 -   @astrojs/markdown-remark@7.2.1"
+    },
+    {
+      "id": 348249080,
+      "tagName": "@astrojs/markdown-satteri@0.3.3",
+      "name": "@astrojs/markdown-satteri@0.3.3",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/markdown-satteri%400.3.3",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:21Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348248911,
+      "tagName": "@astrojs/markdown-remark@7.2.1",
+      "name": "@astrojs/markdown-remark@7.2.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/markdown-remark%407.2.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:03Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348248736,
+      "tagName": "@astrojs/markdoc@2.0.3",
+      "name": "@astrojs/markdoc@2.0.3",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/markdoc%402.0.3",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:40Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1"
+    },
+    {
+      "id": 348249099,
+      "tagName": "@astrojs/language-server@2.16.11",
+      "name": "@astrojs/language-server@2.16.11",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/language-server%402.16.11",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:24Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17059](https://github.com/withastro/astro/pull/17059) [`60cb289`](https://github.com/withastro/astro/commit/60cb289faa8f9e0056a4de7ecca6ec420abd147f) Thanks [@dupontcyborg](https://github.com/dupontcyborg)! - Update volar-service-\\* dependencies from 0...."
+    },
+    {
+      "id": 348248822,
+      "tagName": "@astrojs/internal-helpers@0.10.1",
+      "name": "@astrojs/internal-helpers@0.10.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/internal-helpers%400.10.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:27:51Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17252](https://github.com/withastro/astro/pull/17252) [`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c) Thanks [@matthewp](https://github.com/matthewp)! - Fixes trailing-slash handling for request paths that..."
+    },
+    {
+      "id": 348248892,
+      "tagName": "@astrojs/cloudflare@14.1.1",
+      "name": "@astrojs/cloudflare@14.1.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/cloudflare%4014.1.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-02T19:28:00Z",
+      "publishedDate": "2026-07-02",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   Updated dependencies \\[[`eb6f97e`](https://github.com/withastro/astro/commit/eb6f97e391ee587747e37609c255c7cd4b9cce3c)]: -   @astrojs/internal-helpers@0.10.1 -   @astrojs/underscore-redirects@1.0.3"
+    },
+    {
+      "id": 347643727,
+      "tagName": "astro@7.0.5",
+      "name": "astro@7.0.5",
+      "url": "https://github.com/withastro/astro/releases/tag/astro%407.0.5",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-01T18:21:20Z",
+      "publishedDate": "2026-07-01",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17242](https://github.com/withastro/astro/pull/17242) [`9c05ba4`](https://github.com/withastro/astro/commit/9c05ba474cee5e3ef5142d88e7e08d53acfbe431) Thanks [@matthewp](https://github.com/matthewp)! - Fixes an error that could occur after the dev server..."
+    },
+    {
+      "id": 347643813,
+      "tagName": "astro-vscode@2.16.17",
+      "name": "astro-vscode@2.16.17",
+      "url": "https://github.com/withastro/astro/releases/tag/astro-vscode%402.16.17",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-01T18:21:32Z",
+      "publishedDate": "2026-07-01",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17254](https://github.com/withastro/astro/pull/17254) [`2cffae1`](https://github.com/withastro/astro/commit/2cffae14fcdd4fca649eae1a9d82a1863c8991bd) Thanks [@astrobot-houston](https://github.com/astrobot-houston)! - Fixes syntax highlighting breaking w..."
+    },
+    {
+      "id": 347643768,
+      "tagName": "@astrojs/vue@7.0.1",
+      "name": "@astrojs/vue@7.0.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/vue%407.0.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-01T18:21:26Z",
+      "publishedDate": "2026-07-01",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17249](https://github.com/withastro/astro/pull/17249) [`02b73b0`](https://github.com/withastro/astro/commit/02b73b0fc2e32102e788fd9031ce061337490a73) Thanks [@ematipico](https://github.com/ematipico)! - Fixes an issue where the `peerDependencies` field..."
+    },
+    {
+      "id": 347643863,
+      "tagName": "@astrojs/vercel@11.0.1",
+      "name": "@astrojs/vercel@11.0.1",
+      "url": "https://github.com/withastro/astro/releases/tag/%40astrojs/vercel%4011.0.1",
+      "isPrerelease": false,
+      "isDraft": false,
+      "publishedAt": "2026-07-01T18:21:38Z",
+      "publishedDate": "2026-07-01",
+      "authorLogin": "astrobot-houston",
+      "summary": "### Patch Changes -   [#17249](https://github.com/withastro/astro/pull/17249) [`02b73b0`](https://github.com/withastro/astro/commit/02b73b0fc2e32102e788fd9031ce061337490a73) Thanks [@ematipico](https://github.com/ematipico)! - Fixes an issue where the `peerDependencies` field..."
+    }
+  ],
+  "mergedPullRequestCount": 50,
+  "mergedPullRequests": [
+    {
+      "number": 17224,
+      "title": "Fix trailing slash handling for dynamic file endpoints in dev mode",
+      "url": "https://github.com/withastro/astro/pull/17224",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-06-29T11:10:35Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17228,
+      "title": "Fix styles silently dropped when `await` is used in .astro template markup",
+      "url": "https://github.com/withastro/astro/pull/17228",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-06-29T12:51:34Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17223,
+      "title": "Fix getCollection() returning empty in dev mode for large content collections",
+      "url": "https://github.com/withastro/astro/pull/17223",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-06-29T13:04:51Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17231,
+      "title": "Revert async-slot head propagation fix from #17228",
+      "url": "https://github.com/withastro/astro/pull/17231",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-29T13:42:56Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17219,
+      "title": "Stabilize Windows prefetch E2E test",
+      "url": "https://github.com/withastro/astro/pull/17219",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-29T15:25:03Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17215,
+      "title": "Document route cache invalidation behavior",
+      "url": "https://github.com/withastro/astro/pull/17215",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-29T15:25:19Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17212,
+      "title": "Harden transition directive attribute rendering",
+      "url": "https://github.com/withastro/astro/pull/17212",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-29T15:25:35Z",
+      "mergedDate": "2026-06-29"
+    },
+    {
+      "number": 17229,
+      "title": "chore: simpler package.json types",
+      "url": "https://github.com/withastro/astro/pull/17229",
+      "authorLogin": "florian-lefebvre",
+      "mergedAt": "2026-06-30T06:49:14Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17067,
+      "title": "FIx: inverted logic in a11y-no-redundant-roles rule",
+      "url": "https://github.com/withastro/astro/pull/17067",
+      "authorLogin": "fkatsuhiro",
+      "mergedAt": "2026-06-30T09:50:59Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17234,
+      "title": "chore(deps): update sharp to v0.35",
+      "url": "https://github.com/withastro/astro/pull/17234",
+      "authorLogin": "ocavue",
+      "mergedAt": "2026-06-30T10:29:13Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17184,
+      "title": "chore: bump compiler to latest",
+      "url": "https://github.com/withastro/astro/pull/17184",
+      "authorLogin": "Princesseuh",
+      "mergedAt": "2026-06-30T11:14:06Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17179,
+      "title": "chore(seo): remove redundant twitter metadata tags",
+      "url": "https://github.com/withastro/astro/pull/17179",
+      "authorLogin": "cevdetta",
+      "mergedAt": "2026-06-30T12:16:03Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17213,
+      "title": "[ci] release",
+      "url": "https://github.com/withastro/astro/pull/17213",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-06-30T12:16:28Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17199,
+      "title": "feat(vite-plugin-html): Replace rehype by ultrahtml",
+      "url": "https://github.com/withastro/astro/pull/17199",
+      "authorLogin": "Princesseuh",
+      "mergedAt": "2026-06-30T12:46:19Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17238,
+      "title": "fix: bump prettier to fix smoke tests",
+      "url": "https://github.com/withastro/astro/pull/17238",
+      "authorLogin": "Princesseuh",
+      "mergedAt": "2026-06-30T13:13:14Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17235,
+      "title": "ci: add auto close workflow",
+      "url": "https://github.com/withastro/astro/pull/17235",
+      "authorLogin": "ematipico",
+      "mergedAt": "2026-06-30T14:23:08Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17196,
+      "title": "fix(head): use correct name attribute for twitter:card meta tag",
+      "url": "https://github.com/withastro/astro/pull/17196",
+      "authorLogin": "cevdetta",
+      "mergedAt": "2026-06-30T14:39:35Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17236,
+      "title": "Pre-bundle Cloudflare worker server entrypoint in dev",
+      "url": "https://github.com/withastro/astro/pull/17236",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-30T15:20:31Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17232,
+      "title": "Fix styles dropped when an await precedes a propagating component in slot markup",
+      "url": "https://github.com/withastro/astro/pull/17232",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-30T15:57:37Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17202,
+      "title": "Use Vite tsconfig path resolution by default",
+      "url": "https://github.com/withastro/astro/pull/17202",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-06-30T17:37:32Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17193,
+      "title": "fix: background dev server fails to start in hoisted monorepos",
+      "url": "https://github.com/withastro/astro/pull/17193",
+      "authorLogin": "jan-kubica",
+      "mergedAt": "2026-06-30T17:37:55Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17123,
+      "title": "fix(client router): prevent head elements loss during page transitions with server:defer component",
+      "url": "https://github.com/withastro/astro/pull/17123",
+      "authorLogin": "martrapp",
+      "mergedAt": "2026-06-30T18:00:06Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17226,
+      "title": "Fix inline `<style>` blocks ignoring `vite.build.target` when `cssMinify` is false",
+      "url": "https://github.com/withastro/astro/pull/17226",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-06-30T18:54:39Z",
+      "mergedDate": "2026-06-30"
+    },
+    {
+      "number": 17197,
+      "title": "chore(head): normalize html charset declarations",
+      "url": "https://github.com/withastro/astro/pull/17197",
+      "authorLogin": "cevdetta",
+      "mergedAt": "2026-07-01T08:22:12Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17242,
+      "title": "Fix dev server restart causing missing deps_ssr file errors",
+      "url": "https://github.com/withastro/astro/pull/17242",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-01T12:19:17Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17249,
+      "title": "fix: peer deps of packages",
+      "url": "https://github.com/withastro/astro/pull/17249",
+      "authorLogin": "ematipico",
+      "mergedAt": "2026-07-01T13:39:30Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17245,
+      "title": "Add `edgeFunctions` to Netlify adapter `devFeatures` to allow disabling edge function emulation",
+      "url": "https://github.com/withastro/astro/pull/17245",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T15:46:28Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17254,
+      "title": "Fix syntax highlighting breaking after `@property` in `<style>` blocks",
+      "url": "https://github.com/withastro/astro/pull/17254",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T16:21:11Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17099,
+      "title": "Respect custom image services for Cloudflare build-time generation (`compile` + `custom`)",
+      "url": "https://github.com/withastro/astro/pull/17099",
+      "authorLogin": "adamchal",
+      "mergedAt": "2026-07-01T17:35:38Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17255,
+      "title": "Fix prefetch not triggering for links inside server:defer components",
+      "url": "https://github.com/withastro/astro/pull/17255",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T17:36:05Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17237,
+      "title": "[ci] release",
+      "url": "https://github.com/withastro/astro/pull/17237",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T18:18:42Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17059,
+      "title": "fix(language-server): bump volar-service-* to 0.0.71 (CVE-2026-33532)",
+      "url": "https://github.com/withastro/astro/pull/17059",
+      "authorLogin": "dupontcyborg",
+      "mergedAt": "2026-07-01T18:49:19Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17259,
+      "title": "Restore proxy support in create-astro for corporate/firewall environments",
+      "url": "https://github.com/withastro/astro/pull/17259",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T20:05:50Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17248,
+      "title": "Skip dev server setup in `configureServer` when running inside Vitest",
+      "url": "https://github.com/withastro/astro/pull/17248",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T20:28:08Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17257,
+      "title": "Fix astro check failing to resolve dependencies when astro is in a virtual store",
+      "url": "https://github.com/withastro/astro/pull/17257",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T20:28:26Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17261,
+      "title": "Fix false deprecation warning for markdown.gfm/smartypants in Container API",
+      "url": "https://github.com/withastro/astro/pull/17261",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-01T21:05:43Z",
+      "mergedDate": "2026-07-01"
+    },
+    {
+      "number": 17250,
+      "title": "Apply the origin check to Astro Actions regardless of pipeline order",
+      "url": "https://github.com/withastro/astro/pull/17250",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T12:18:28Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17270,
+      "title": "fix(@astrojs/solid-js): detect Svelte 5 components using the $$renderer prop",
+      "url": "https://github.com/withastro/astro/pull/17270",
+      "authorLogin": "FrancoKaddour",
+      "mergedAt": "2026-07-02T13:57:47Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17252,
+      "title": "Treat backslash-prefixed paths as internal in trailing-slash handling",
+      "url": "https://github.com/withastro/astro/pull/17252",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T14:34:10Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17251,
+      "title": "Validate attribute names on custom HTML elements during SSR",
+      "url": "https://github.com/withastro/astro/pull/17251",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T14:50:04Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17274,
+      "title": "Fix `render()` type error when using live collections without a content config",
+      "url": "https://github.com/withastro/astro/pull/17274",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-02T15:23:49Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17260,
+      "title": "Keep component scripts in place when rendered via Astro.slots.render()",
+      "url": "https://github.com/withastro/astro/pull/17260",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T15:41:37Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17269,
+      "title": "Find Astro.locals references from .ts files in the TypeScript plugin",
+      "url": "https://github.com/withastro/astro/pull/17269",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T15:45:09Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17277,
+      "title": "chore: bump triagebot-action to v0.3.9",
+      "url": "https://github.com/withastro/astro/pull/17277",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T16:57:10Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17272,
+      "title": "Resolve extensionless imports in island component paths",
+      "url": "https://github.com/withastro/astro/pull/17272",
+      "authorLogin": "matthewp",
+      "mergedAt": "2026-07-02T17:51:11Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17279,
+      "title": "Fix `inferSize` for remote images in the `Picture` component",
+      "url": "https://github.com/withastro/astro/pull/17279",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-02T18:05:18Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17278,
+      "title": "Fix empty style tags for virtual CSS modules in dev mode when JS is disabled",
+      "url": "https://github.com/withastro/astro/pull/17278",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-02T18:37:58Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17247,
+      "title": "Fix route generator throwing on a dynamic param value of 0",
+      "url": "https://github.com/withastro/astro/pull/17247",
+      "authorLogin": "chatman-media",
+      "mergedAt": "2026-07-02T18:48:00Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17256,
+      "title": "[ci] release",
+      "url": "https://github.com/withastro/astro/pull/17256",
+      "authorLogin": "astrobot-houston",
+      "mergedAt": "2026-07-02T19:24:59Z",
+      "mergedDate": "2026-07-02"
+    },
+    {
+      "number": 17285,
+      "title": "Respect integration-defined image services for Cloudflare build-time image generation",
+      "url": "https://github.com/withastro/astro/pull/17285",
+      "authorLogin": "adamchal",
+      "mergedAt": "2026-07-02T20:45:41Z",
+      "mergedDate": "2026-07-02"
+    }
+  ],
+  "contributorCount": 4,
+  "contributors": [
+    {
+      "login": "jan-kubica",
+      "mergedAt": "2026-06-30T17:37:55Z",
+      "mergedDate": "2026-06-30",
+      "pullRequest": {
+        "number": 17193,
+        "title": "fix: background dev server fails to start in hoisted monorepos",
+        "url": "https://github.com/withastro/astro/pull/17193",
+        "authorLogin": "jan-kubica",
+        "mergedAt": "2026-06-30T17:37:55Z",
+        "mergedDate": "2026-06-30"
+      }
+    },
+    {
+      "login": "dupontcyborg",
+      "mergedAt": "2026-07-01T18:49:19Z",
+      "mergedDate": "2026-07-01",
+      "pullRequest": {
+        "number": 17059,
+        "title": "fix(language-server): bump volar-service-* to 0.0.71 (CVE-2026-33532)",
+        "url": "https://github.com/withastro/astro/pull/17059",
+        "authorLogin": "dupontcyborg",
+        "mergedAt": "2026-07-01T18:49:19Z",
+        "mergedDate": "2026-07-01"
+      }
+    },
+    {
+      "login": "FrancoKaddour",
+      "mergedAt": "2026-07-02T13:57:47Z",
+      "mergedDate": "2026-07-02",
+      "pullRequest": {
+        "number": 17270,
+        "title": "fix(@astrojs/solid-js): detect Svelte 5 components using the $$renderer prop",
+        "url": "https://github.com/withastro/astro/pull/17270",
+        "authorLogin": "FrancoKaddour",
+        "mergedAt": "2026-07-02T13:57:47Z",
+        "mergedDate": "2026-07-02"
+      }
+    },
+    {
+      "login": "chatman-media",
+      "mergedAt": "2026-07-02T18:48:00Z",
+      "mergedDate": "2026-07-02",
+      "pullRequest": {
+        "number": 17247,
+        "title": "Fix route generator throwing on a dynamic param value of 0",
+        "url": "https://github.com/withastro/astro/pull/17247",
+        "authorLogin": "chatman-media",
+        "mergedAt": "2026-07-02T18:48:00Z",
+        "mergedDate": "2026-07-02"
+      }
+    }
+  ],
+  "blogSource": "rss",
+  "blogPostCount": 1,
+  "blogPosts": [
+    {
+      "title": "What&apos;s new in Astro - June 2026",
+      "url": "https://astro.build/blog/whats-new-june-2026/",
+      "publishedAt": "2026-06-30T00:00:00.000Z",
+      "publishedDate": "2026-06-30",
+      "summarySourceText": "June 2026 - Astro 7, summer swag collection, Astro Germany meetup, and more!"
+    }
+  ],
+  "eventSource": "local-events-json",
+  "mostRecentPastEvent": {
+    "id": "astro-community-call-june-2026",
+    "title": "Astro Community Call - June 2026",
+    "url": "https://lu.ma/astro-community-call-june-2026",
+    "startAt": "2026-06-24T17:00:00Z",
+    "endAt": "2026-06-24T18:00:00Z",
+    "startDate": "2026-06-24",
+    "endDate": "2026-06-24",
+    "location": "Online",
+    "summary": "Community Q&A and project updates from the Astro team."
+  },
+  "nextUpcomingEvent": {
+    "id": "astro-launch-week-july-2026",
+    "title": "Astro Launch Week - July 2026",
+    "url": "https://lu.ma/astro-launch-week-july-2026",
+    "startAt": "2026-07-08T16:00:00Z",
+    "endAt": "2026-07-08T17:30:00Z",
+    "startDate": "2026-07-08",
+    "endDate": "2026-07-08",
+    "location": "Online",
+    "summary": "Launch Week kickoff with demos, announcements, and community highlights."
+  }
+}

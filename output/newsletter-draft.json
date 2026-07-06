@@ -1,0 +1,47 @@
+{
+  "subject": "Astro Weekly: Latest Updates & Launch Week Incoming",
+  "previewText": "Get the scoop on recent Astro releases, welcome new contributors, and mark your calendars for Astro Launch Week.",
+  "intro": "Welcome to your weekly Astro update. This edition brings you the latest releases from June 28 - July 5, celebrates our newest contributors, and looks ahead to Launch Week (July 2026).",
+  "releaseHighlights": {
+    "title": "Astro Release Highlights",
+    "summary": "Recent Astro updates include `astro@7.0.6` fixing a false deprecation warning and `create-astro@5.2.2` improving proxy support. For developers, `@astrojs/ts-plugin@1.10.10` addresses an issue with \"Go To References\" in TypeScript files, and `@astrojs/solid-js@7.0.1` resolves an incorrect claim for Solid.js integration.",
+    "links": [
+      "https://github.com/withastro/astro/releases/tag/astro%407.0.6",
+      "https://github.com/withastro/astro/releases/tag/create-astro%405.2.2",
+      "https://github.com/withastro/astro/releases/tag/%40astrojs/ts-plugin%401.10.10",
+      "https://github.com/withastro/astro/releases/tag/%40astrojs/solid-js%407.0.1"
+    ]
+  },
+  "firstTimeContributorShoutOuts": {
+    "title": "First-Time Contributor Shout-Outs!",
+    "summary": "A huge welcome and thank you to our first-time contributors! jan-kubica helped fix a background dev server issue in monorepos. dupontcyborg addressed a language server security vulnerability. FrancoKaddour improved Svelte 5 component detection for Solid.js integration. chatman-media fixed a route generator bug. We appreciate your valuable contributions!",
+    "links": [
+      "https://github.com/withastro/astro/pull/17193",
+      "https://github.com/withastro/astro/pull/17059",
+      "https://github.com/withastro/astro/pull/17270",
+      "https://github.com/withastro/astro/pull/17247"
+    ]
+  },
+  "latestBlogPost": {
+    "title": "What&apos;s new in Astro - June 2026",
+    "summary": "June 2026 - Astro 7, summer swag collection, Astro Germany meetup, and more!",
+    "links": [
+      "https://astro.build/blog/whats-new-june-2026/"
+    ]
+  },
+  "previousEventThankYou": {
+    "title": "Astro Community Call - June 2026",
+    "summary": "Thank you for attending the Community Q&A and project updates from the Astro team.",
+    "links": [
+      "https://lu.ma/astro-community-call-june-2026"
+    ]
+  },
+  "upcomingEventReminder": {
+    "title": "Astro Launch Week - July 2026",
+    "summary": "Join us for Launch Week kickoff with demos, announcements, and community highlights.",
+    "links": [
+      "https://lu.ma/astro-launch-week-july-2026"
+    ]
+  },
+  "closing": "That's all for this week's Astro updates. Thank you for being a part of our community. We look forward to seeing you at Launch Week and next week's edition!"
+}

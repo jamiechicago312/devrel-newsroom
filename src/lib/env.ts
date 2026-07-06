@@ -16,9 +16,13 @@ export type AppEnv = z.infer<typeof envSchema>;
 
 export function readEnv(env: NodeJS.ProcessEnv = process.env): AppEnv {
   const parsed = envSchema.parse(env);
+  const googleApiKey = parsed.GOOGLE_API_KEY ?? parsed.GOOGLE_GENERATIVE_AI_API_KEY;
 
-  if (!parsed.GOOGLE_API_KEY && parsed.GOOGLE_GENERATIVE_AI_API_KEY) {
-    parsed.GOOGLE_API_KEY = parsed.GOOGLE_GENERATIVE_AI_API_KEY;
+  if (googleApiKey) {
+    parsed.GOOGLE_API_KEY = googleApiKey;
+    parsed.GOOGLE_GENERATIVE_AI_API_KEY = googleApiKey;
+    env.GOOGLE_API_KEY = googleApiKey;
+    env.GOOGLE_GENERATIVE_AI_API_KEY = googleApiKey;
   }
 
   return parsed;
