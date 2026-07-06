@@ -6,6 +6,7 @@ import {
   filterBlogPostsByWindow,
   parseAstroBlogRss,
 } from '../src/lib/blog.ts';
+import { renderNewsletterEmail } from '../src/lib/email.ts';
 import { loadMockEvents, selectNewsletterEvents } from '../src/lib/events.ts';
 import {
   filterPullRequestsByWindow,
@@ -15,14 +16,13 @@ import {
   normalizeGitHubRelease,
   parseSourceProject,
 } from '../src/lib/github.ts';
+import { buildNotionNewsletterPagePayload, extractMarkdownSectionFromNotionBlocks } from '../src/lib/notion.ts';
+import { renderNewsletterBodyMarkdown } from '../src/lib/newsletter.ts';
 import { blogPostCollectionSchema } from '../src/schemas/blog.schema.ts';
 import { githubContributorCollectionSchema } from '../src/schemas/contributor.schema.ts';
+import { newsletterEmailArtifactSchema } from '../src/schemas/email.schema.ts';
 import { newsletterDraftSchema, newsletterResearchSchema, newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
 import { githubReleaseCollectionSchema } from '../src/schemas/release.schema.ts';
-import { buildNotionNewsletterPagePayload } from '../src/lib/notion.ts';
-import { renderNewsletterBodyMarkdown } from '../src/lib/newsletter.ts';
-import { renderNewsletterEmail } from '../src/lib/email.ts';
-import { newsletterEmailArtifactSchema } from '../src/schemas/email.schema.ts';
 
 const sampleWindow = newsletterWindowInputSchema.parse({
   sourceProject: 'withastro/astro',
@@ -222,6 +222,11 @@ const sampleNotionPayload = buildNotionNewsletterPagePayload({
   generatedAt: '2026-07-06T00:00:00.000Z',
 });
 
+const sampleEditedMarkdown = extractMarkdownSectionFromNotionBlocks({
+  blocks: sampleNotionPayload.children,
+  sectionHeading: 'Full Newsletter Body',
+});
+
 const sampleEmailArtifact = newsletterEmailArtifactSchema.parse(await renderNewsletterEmail({
   draft: sampleDraft,
   research: sampleResearch,
@@ -249,6 +254,7 @@ console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.tit
 console.log(`Sample newsletter subject: ${sampleDraft.subject}`);
 console.log(`Sample newsletter body lines: ${sampleNewsletterBody.split('\n').length}`);
 console.log(`Sample Notion block count: ${sampleNotionPayload.children.length}`);
+console.log(`Sample edited markdown lines: ${sampleEditedMarkdown.split('\n').filter(Boolean).length}`);
 console.log(`Sample email HTML length: ${sampleEmailArtifact.html.length}`);
 console.log(`Sample email text length: ${sampleEmailArtifact.text.length}`);
 console.log(`Blog source URL: ${astroBlogConfig.blogUrl}`);

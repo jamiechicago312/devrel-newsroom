@@ -21,7 +21,8 @@
     "workflow:newsletter": "node --experimental-strip-types scripts/run-newsletter-workflow.ts",
     "generate:newsletter": "node --experimental-strip-types scripts/generate-newsletter.ts",
     "publish:notion": "node --experimental-strip-types scripts/publish-notion.ts",
-    "render:newsletter": "node --experimental-strip-types scripts/render-newsletter.ts"
+    "render:newsletter": "node --experimental-strip-types scripts/render-newsletter.ts",
+    "sync:notion": "node --experimental-strip-types scripts/sync-notion.ts"
   },
   "dependencies": {
     "@mastra/core": "^1.49.0",

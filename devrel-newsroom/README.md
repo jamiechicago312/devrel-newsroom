@@ -2,7 +2,7 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 8 adds a React Email rendering step on top of the workflow research, drafting, and publishing pipeline.
+Current milestones add React Email rendering, Notion publishing, and simple Notion sync-back on top of the workflow research and drafting pipeline.
 
 ## What exists currently
 
@@ -17,6 +17,7 @@ Milestone 8 adds a React Email rendering step on top of the workflow research, d
 - newsletter draft runner script that writes `output/newsletter-draft.json`
 - newsletter email renderer that writes `output/newsletter.html` and `output/newsletter.json`
 - Notion publisher script that creates a child page under a configured parent page and writes `output/notion-publish-result.json`
+- Notion sync-back script that reads an edited Notion page and writes `output/newsletter-edited.md`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
 
@@ -33,12 +34,12 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For Milestone 7:
+For the current milestones:
 
 - `GOOGLE_API_KEY` is required for newsletter drafting with Gemini
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
-- `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing
+- `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing and sync-back
 - `npm test` does not require live API access
 - `npm run dev` starts Mastra Studio for manual inspection, but Studio checks are not part of the automated test gate
 
@@ -75,7 +76,7 @@ npm test
 The current `test` script runs:
 
 - TypeScript typechecking
-- a smoke script that validates the release, contributor, blog, event, and newsletter draft schemas without opening Mastra Studio
+- a smoke script that validates the release, contributor, blog, event, newsletter draft, email render, and Notion sync-back extraction paths without opening Mastra Studio
 
 Collect live releases for a specific window:
 
@@ -141,6 +142,14 @@ npm run publish:notion
 
 This reads `output/newsletter-draft.json` and `output/newsletter-data.json`, creates a child page under `NOTION_PAGE_ID`, and writes `output/notion-publish-result.json`.
 
+Sync the edited newsletter body back from Notion:
+
+```bash
+npm run sync:notion
+```
+
+This reads `output/notion-publish-result.json`, fetches the published page from Notion, extracts the `Full Newsletter Body` section, and writes `output/newsletter-edited.md`.
+
 Build the app:
 
 ```bash
@@ -176,4 +185,4 @@ src/
 
 ## Next milestones
 
-- Notion editing sync
+- Flatten repository structure
