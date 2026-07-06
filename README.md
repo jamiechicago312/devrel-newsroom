@@ -59,6 +59,8 @@ npm run dev
 
 Mastra Studio should be available at `http://localhost:4111` unless that port is already in use.
 
+In Mastra Studio, use `newsletter-pipeline-workflow` for the clean end-to-end demo flow. It takes only `sourceProject`, `startDate`, and `endDate`, then runs research collection, drafting, QA, and email rendering in one workflow run.
+
 ### Verify locally
 
 Run the automated gate:
@@ -121,13 +123,13 @@ Run the full newsletter research workflow:
 npm run workflow:newsletter -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-Generate the structured newsletter draft through the multi-agent pipeline:
+Run the end-to-end newsletter pipeline from the CLI. This now performs research, drafting, QA, and rendering in one command:
 
 ```bash
 npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
 ```
 
-Render the React Email newsletter artifacts:
+Render the React Email newsletter artifacts again from existing draft and research files if you want to rerender without rerunning the agent pipeline:
 
 ```bash
 npm run render:newsletter
