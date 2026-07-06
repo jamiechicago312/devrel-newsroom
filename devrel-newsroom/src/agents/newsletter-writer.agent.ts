@@ -13,5 +13,5 @@ Rules:
 - If a section has no data, state that plainly and still use only provided facts.
 - Keep the newsletter concise, readable, and suitable for a developer audience.
 - Return only the structured JSON requested by the caller.`,
-  model: 'google/gemini-2.5-pro',
+  model: 'google/gemini-2.5-flash',
 });
