@@ -8,12 +8,13 @@ import {
 } from '../schemas/agent.schema.ts';
 import { newsletterDraftSchema, newsletterDraftingSourceSchema, newsletterResearchSchema, newsletterSectionSchema } from '../schemas/newsletter.schema.ts';
 import { buildNewsletterDraftingSource } from '../lib/drafting-source.ts';
-import { communityCuratorAgent } from '../agents/community-curator.agent.ts';
-import { contributorSpotlightAgent } from '../agents/contributor-spotlight.agent.ts';
-import { newsletterEditorAgent } from '../agents/newsletter-editor.agent.ts';
-import { newsletterQaAgent } from '../agents/newsletter-qa.agent.ts';
-import { newsletterWriterAgent } from '../agents/newsletter-writer.agent.ts';
-import { releaseAnalystAgent } from '../agents/release-analyst.agent.ts';
+import { generateWithFallback } from '../lib/llm.ts';
+import { communityCuratorAgent, communityCuratorFallbackAgent } from '../agents/community-curator.agent.ts';
+import { contributorSpotlightAgent, contributorSpotlightFallbackAgent } from '../agents/contributor-spotlight.agent.ts';
+import { newsletterEditorAgent, newsletterEditorFallbackAgent } from '../agents/newsletter-editor.agent.ts';
+import { newsletterQaAgent, newsletterQaFallbackAgent } from '../agents/newsletter-qa.agent.ts';
+import { newsletterWriterAgent, newsletterWriterFallbackAgent } from '../agents/newsletter-writer.agent.ts';
+import { releaseAnalystAgent, releaseAnalystFallbackAgent } from '../agents/release-analyst.agent.ts';
 
 const draftingBundleSchema = newsletterDraftingSourceSchema.extend({
   agentBriefs: newsletterAgentBriefsSchema,
@@ -64,16 +65,20 @@ const generateAgentBriefs = createStep({
     }, null, 2)}`;
 
     const [releaseResult, contributorResult, communityResult] = await Promise.all([
-      releaseAnalystAgent.generate(releasePrompt, {
+      generateWithFallback(releaseAnalystAgent, releaseAnalystFallbackAgent, releasePrompt, {
         structuredOutput: { schema: newsletterSectionSchema },
       }),
-      contributorSpotlightAgent.generate(contributorPrompt, {
+      generateWithFallback(contributorSpotlightAgent, contributorSpotlightFallbackAgent, contributorPrompt, {
         structuredOutput: { schema: newsletterSectionSchema },
       }),
-      communityCuratorAgent.generate(communityPrompt, {
+      generateWithFallback(communityCuratorAgent, communityCuratorFallbackAgent, communityPrompt, {
         structuredOutput: { schema: newsletterCommunityBriefSchema },
       }),
     ]);
+
+    const releaseHighlights = newsletterSectionSchema.parse(releaseResult.object);
+    const firstTimeContributorShoutOuts = newsletterSectionSchema.parse(contributorResult.object);
+    const communityBrief = newsletterCommunityBriefSchema.parse(communityResult.object);
 
     const editorialPrompt = `Create the editorial frame for this newsletter.\n\nSource data:\n${JSON.stringify({
       sourceProject: inputData.sourceProject,
@@ -82,26 +87,27 @@ const generateAgentBriefs = createStep({
       releaseCount: inputData.releaseCount,
       contributorCount: inputData.contributorCount,
       blogPostCount: inputData.blogPostCount,
-      releaseHighlights: releaseResult.object,
-      firstTimeContributorShoutOuts: contributorResult.object,
-      latestBlogPost: communityResult.object.latestBlogPost,
-      previousEventThankYou: communityResult.object.previousEventThankYou,
-      upcomingEventReminder: communityResult.object.upcomingEventReminder,
+      releaseHighlights,
+      firstTimeContributorShoutOuts,
+      latestBlogPost: communityBrief.latestBlogPost,
+      previousEventThankYou: communityBrief.previousEventThankYou,
+      upcomingEventReminder: communityBrief.upcomingEventReminder,
     }, null, 2)}`;
 
-    const editorialResult = await newsletterEditorAgent.generate(editorialPrompt, {
+    const editorialResult = await generateWithFallback(newsletterEditorAgent, newsletterEditorFallbackAgent, editorialPrompt, {
       structuredOutput: { schema: newsletterEditorialOutlineSchema },
     });
+    const editorialOutline = newsletterEditorialOutlineSchema.parse(editorialResult.object);
 
     return {
       ...inputData,
       agentBriefs: {
-        releaseHighlights: releaseResult.object,
-        firstTimeContributorShoutOuts: contributorResult.object,
-        latestBlogPost: communityResult.object.latestBlogPost,
-        previousEventThankYou: communityResult.object.previousEventThankYou,
-        upcomingEventReminder: communityResult.object.upcomingEventReminder,
-        editorialOutline: editorialResult.object,
+        releaseHighlights,
+        firstTimeContributorShoutOuts,
+        latestBlogPost: communityBrief.latestBlogPost,
+        previousEventThankYou: communityBrief.previousEventThankYou,
+        upcomingEventReminder: communityBrief.upcomingEventReminder,
+        editorialOutline,
       },
     };
   },
@@ -126,16 +132,17 @@ const composeDraft = createStep({
       agentBriefs: inputData.agentBriefs,
     }, null, 2)}`;
 
-    const draftResult = await newsletterWriterAgent.generate(prompt, {
+    const draftResult = await generateWithFallback(newsletterWriterAgent, newsletterWriterFallbackAgent, prompt, {
       structuredOutput: {
         schema: newsletterDraftSchema,
       },
     });
+    const draft = newsletterDraftSchema.parse(draftResult.object);
 
     return {
       draftingSource: newsletterDraftingSourceSchema.parse(inputData),
       agentBriefs: inputData.agentBriefs,
-      draft: draftResult.object,
+      draft,
     };
   },
 });
@@ -160,17 +167,18 @@ const reviewDraft = createStep({
       draft: inputData.draft,
     }, null, 2)}`;
 
-    const qaResult = await newsletterQaAgent.generate(qaPrompt, {
+    const qaResult = await generateWithFallback(newsletterQaAgent, newsletterQaFallbackAgent, qaPrompt, {
       structuredOutput: {
         schema: newsletterQaReportSchema,
       },
     });
 
+    const parsedQaReport = newsletterQaReportSchema.parse(qaResult.object);
     const qaReport = {
-      ...qaResult.object,
-      checks: qaResult.object.checks.length > 0
-        ? qaResult.object.checks
-        : [qaResult.object.status === 'pass'
+      ...parsedQaReport,
+      checks: parsedQaReport.checks.length > 0
+        ? parsedQaReport.checks
+        : [parsedQaReport.status === 'pass'
             ? 'No additional QA issues were flagged.'
             : 'QA reported concerns but did not enumerate them.'],
     };
