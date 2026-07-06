@@ -2,15 +2,16 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 4 adds Astro blog discovery on top of the release and contributor collection scaffold.
+Milestone 5 adds a local mock event source on top of the release, contributor, and blog collection scaffold.
 
-## What exists in Milestone 4
+## What exists in Milestone 5
 
 - project-specific Mastra entrypoint with stable local runtime storage
 - newsletter workflow with live GitHub release collection and contributor detection
-- shared newsletter, release, contributor, and blog schemas
+- shared newsletter, release, contributor, blog, and event schemas
 - GitHub release and contributor collection utilities and CLI scripts
 - Astro blog collection via RSS with Tavily fallback when RSS has no matching posts
+- local mock Luma-style event collection from `data/events.json`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
 
@@ -27,7 +28,7 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For Milestone 4:
+For Milestone 5:
 
 - `GITHUB_TOKEN` is required for live release and contributor collection
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
@@ -67,7 +68,7 @@ npm test
 The current `test` script runs:
 
 - TypeScript typechecking
-- a smoke script that validates the release, contributor, and blog scaffolding without opening Mastra Studio
+- a smoke script that validates the release, contributor, blog, and event scaffolding without opening Mastra Studio
 
 Collect live releases for a specific window:
 
@@ -93,6 +94,14 @@ npm run collect:blog -- withastro/astro 2026-06-28 2026-07-05
 
 This writes `output/blog-posts.json`.
 
+Collect the local mock event summary for a specific window:
+
+```bash
+npm run collect:events -- withastro/astro 2026-06-28 2026-07-05
+```
+
+This writes `output/events.json`.
+
 Build the app:
 
 ```bash
@@ -115,6 +124,7 @@ If port `4111` is already in use, Mastra may choose another port. The terminal o
 ## Project layout
 
 ```txt
+data/
 output/
 scripts/
 src/
@@ -127,7 +137,6 @@ src/
 
 ## Next milestones
 
-- mock events
 - newsletter drafting
 - React Email rendering
 - Notion publishing

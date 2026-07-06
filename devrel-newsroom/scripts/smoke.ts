@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { readEnv } from '../src/lib/env.ts';
 import {
   astroBlogConfig,
@@ -5,6 +6,7 @@ import {
   filterBlogPostsByWindow,
   parseAstroBlogRss,
 } from '../src/lib/blog.ts';
+import { loadMockEvents, selectNewsletterEvents } from '../src/lib/events.ts';
 import {
   filterPullRequestsByWindow,
   filterReleasesByWindow,
@@ -121,6 +123,14 @@ const contributors = await identifyFirstTimeContributors({
   hasPriorMergedPullRequest: async ({ authorLogin }) => authorLogin === 'existing-maintainer',
 });
 
+const sampleEvents = loadMockEvents(path.resolve(import.meta.dirname, '..', 'data', 'events.json'));
+const sampleEventCollection = selectNewsletterEvents({
+  events: sampleEvents,
+  sourceProject: sampleWindow.sourceProject,
+  startDate: sampleWindow.startDate,
+  endDate: sampleWindow.endDate,
+});
+
 const parsedSourceProject = parseSourceProject(sampleWindow.sourceProject);
 const sampleReleaseCollection = githubReleaseCollectionSchema.parse({
   sourceProject: sampleWindow.sourceProject,
@@ -163,6 +173,8 @@ console.log(`Sample releases in window: ${sampleReleaseCollection.releaseCount}`
 console.log(`Sample merged PRs in window: ${sampleContributorCollection.mergedPullRequestCount}`);
 console.log(`Sample first-time contributors: ${sampleContributorCollection.contributorCount}`);
 console.log(`Sample blog posts in window: ${sampleBlogCollection.blogPostCount}`);
+console.log(`Most recent past event: ${sampleEventCollection.mostRecentPastEvent?.title ?? 'none'}`);
+console.log(`Next upcoming event: ${sampleEventCollection.nextUpcomingEvent?.title ?? 'none'}`);
 console.log(`Blog source URL: ${astroBlogConfig.blogUrl}`);
 console.log(`Blog RSS URL: ${astroBlogConfig.rssUrl}`);
 console.log(`Configured env keys: ${configuredKeys.length ? configuredKeys.join(', ') : 'none'}`);
