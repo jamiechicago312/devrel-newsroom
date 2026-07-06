@@ -1,5 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
+import { readEnv } from '../lib/env';
 import { Mastra } from '@mastra/core/mastra';
 import { MastraCompositeStore } from '@mastra/core/storage';
 import { DuckDBStore } from '@mastra/duckdb';
@@ -23,6 +24,7 @@ import { newsletterWorkflow } from '../workflows/newsletter.workflow';
 const storageDir = path.resolve(import.meta.dirname, '..', '..', '.mastra', 'storage');
 
 mkdirSync(storageDir, { recursive: true });
+readEnv();
 
 export const mastra = new Mastra({
   workflows: { newsletterWorkflow, newsletterDraftWorkflow },

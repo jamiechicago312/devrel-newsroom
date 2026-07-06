@@ -9,7 +9,7 @@ Milestone 10a makes the drafting layer deliberately Mastra-forward by splitting 
 - project-specific Mastra entrypoint with stable local runtime storage
 - newsletter workflow that orchestrates release, contributor, blog, and event collection
 - multi-agent newsletter draft workflow that coordinates release, contributor, community, editorial, writer, and QA agents
-- specialized Mastra agents for release analysis, contributor spotlighting, community curation, editorial framing, final assembly, and QA review
+- specialized Mastra agents for release analysis, contributor spotlighting, community curation, editorial framing, final assembly, and QA review, split across Gemini and OpenAI models
 - shared newsletter, research, email, and agent-brief schemas
 - GitHub release and contributor collection utilities and CLI scripts
 - Astro blog collection via RSS with Tavily fallback when RSS has no matching posts
@@ -25,12 +25,12 @@ Milestone 10a makes the drafting layer deliberately Mastra-forward by splitting 
 
 ## Agent roles
 
-- `release-analyst` turns release data into a grounded release highlights section
-- `contributor-spotlight` turns merged PR data into first-time contributor highlights
-- `community-curator` curates the latest blog and event sections
-- `newsletter-editor` creates the subject line, preview text, intro, and closing
-- `newsletter-writer` assembles the final structured newsletter draft from the specialized briefs
-- `newsletter-qa` reviews the final draft and returns a structured QA report
+- `release-analyst` uses Gemini to turn release data into a grounded release highlights section
+- `contributor-spotlight` uses Gemini to turn merged PR data into first-time contributor highlights
+- `community-curator` uses Gemini to curate the latest blog and event sections
+- `newsletter-editor` uses OpenAI to create the subject line, preview text, intro, and closing
+- `newsletter-writer` uses OpenAI to assemble the final structured newsletter draft from the specialized briefs
+- `newsletter-qa` uses Gemini to review the final draft and return a structured QA report
 
 ## Requirements
 
@@ -47,7 +47,8 @@ cp .env.example .env
 
 For the current milestones:
 
-- `GOOGLE_API_KEY` is required for newsletter drafting with Gemini
+- `GOOGLE_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` is required for the Gemini-backed analysis agents
+- `OPENAI_API_KEY` is required for the OpenAI-backed editorial and newsletter-writing agents
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
 - `NOTION_TOKEN` and `NOTION_PAGE_ID` are required for live Notion publishing and sync-back
