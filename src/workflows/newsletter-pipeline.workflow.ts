@@ -1,4 +1,5 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows';
+import { persistNewsletterArtifacts } from '../lib/artifacts.ts';
 import { renderNewsletterEmail } from '../lib/email.ts';
 import { newsletterDraftWorkflow } from './newsletter-draft.workflow.ts';
 import { newsletterWorkflow } from './newsletter.workflow.ts';
@@ -63,7 +64,9 @@ const renderNewsletterArtifact = createStep({
   id: 'render-newsletter-artifact',
   description: 'Renders the final email artifact so the workflow returns a full ready-to-review newsletter package.',
   inputSchema: newsletterPipelineDraftBundleSchema,
-  outputSchema: newsletterPipelineWorkflowOutputSchema,
+  outputSchema: newsletterPipelineDraftBundleSchema.extend({
+    emailArtifact: newsletterPipelineWorkflowOutputSchema.shape.emailArtifact,
+  }),
   execute: async ({ inputData }) => {
     if (!inputData) {
       throw new Error('Input data is required');
@@ -83,6 +86,34 @@ const renderNewsletterArtifact = createStep({
   },
 });
 
+const persistArtifacts = createStep({
+  id: 'persist-newsletter-artifacts',
+  description: 'Writes the workflow artifacts to a timestamped folder under output/.',
+  inputSchema: newsletterPipelineDraftBundleSchema.extend({
+    emailArtifact: newsletterPipelineWorkflowOutputSchema.shape.emailArtifact,
+  }),
+  outputSchema: newsletterPipelineWorkflowOutputSchema,
+  execute: async ({ inputData }) => {
+    if (!inputData) {
+      throw new Error('Input data is required');
+    }
+
+    const persistedArtifacts = persistNewsletterArtifacts({
+      research: inputData.research,
+      draftingSource: inputData.draftingSource,
+      agentBriefs: inputData.agentBriefs,
+      draft: inputData.draft,
+      qaReport: inputData.qaReport,
+      emailArtifact: inputData.emailArtifact,
+    });
+
+    return {
+      ...inputData,
+      persistedArtifacts,
+    };
+  },
+});
+
 export const newsletterPipelineWorkflow = createWorkflow({
   id: 'newsletter-pipeline-workflow',
   inputSchema: newsletterWindowInputSchema,
@@ -90,6 +121,7 @@ export const newsletterPipelineWorkflow = createWorkflow({
 })
   .then(runNewsletterResearch)
   .then(runNewsletterDraft)
-  .then(renderNewsletterArtifact);
+  .then(renderNewsletterArtifact)
+  .then(persistArtifacts);
 
 newsletterPipelineWorkflow.commit();
