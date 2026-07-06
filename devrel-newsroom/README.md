@@ -2,17 +2,19 @@
 
 DevRel Newsroom is a Mastra-based TypeScript project that generates a review-ready developer newsletter from real open-source project activity.
 
-Milestone 6 adds a runnable Mastra workflow that orchestrates the current collection stages into one structured newsletter research artifact.
+Milestone 7 adds a structured newsletter drafting agent on top of the workflow research pipeline.
 
-## What exists in Milestone 6
+## What exists in Milestone 7
 
 - project-specific Mastra entrypoint with stable local runtime storage
 - newsletter workflow that orchestrates release, contributor, blog, and event collection
+- newsletter writer agent that drafts structured JSON from workflow research data using Gemini
 - shared newsletter, release, contributor, blog, and event schemas
 - GitHub release and contributor collection utilities and CLI scripts
 - Astro blog collection via RSS with Tavily fallback when RSS has no matching posts
 - local mock Luma-style event collection from `data/events.json`
 - workflow runner script that writes `output/newsletter-data.json`
+- newsletter draft runner script that writes `output/newsletter-draft.json`
 - smoke script for local verification without network access
 - clean `output/` directory for generated milestone artifacts
 
@@ -29,8 +31,9 @@ Copy `.env.example` to `.env`.
 cp .env.example .env
 ```
 
-For Milestone 6:
+For Milestone 7:
 
+- `GOOGLE_API_KEY` is required for newsletter drafting with Gemini
 - `GITHUB_TOKEN` is required for live release and contributor collection and for the full workflow runner
 - `TAVILY_API_KEY` is optional and is only used if the Astro RSS feed returns no posts in the requested window
 - `npm test` does not require live API access
@@ -69,7 +72,7 @@ npm test
 The current `test` script runs:
 
 - TypeScript typechecking
-- a smoke script that validates the release, contributor, blog, and event scaffolding without opening Mastra Studio
+- a smoke script that validates the release, contributor, blog, event, and newsletter draft schemas without opening Mastra Studio
 
 Collect live releases for a specific window:
 
@@ -111,6 +114,14 @@ npm run workflow:newsletter -- withastro/astro 2026-06-28 2026-07-05
 
 This writes `output/newsletter-data.json`.
 
+Generate the structured newsletter draft:
+
+```bash
+npm run generate:newsletter -- withastro/astro 2026-06-28 2026-07-05
+```
+
+This writes `output/newsletter-draft.json`.
+
 Build the app:
 
 ```bash
@@ -146,6 +157,5 @@ src/
 
 ## Next milestones
 
-- newsletter drafting
 - React Email rendering
 - Notion publishing
