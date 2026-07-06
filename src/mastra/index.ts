@@ -19,6 +19,7 @@ import { newsletterQaAgent } from '../agents/newsletter-qa.agent';
 import { newsletterWriterAgent } from '../agents/newsletter-writer.agent';
 import { releaseAnalystAgent } from '../agents/release-analyst.agent';
 import { newsletterDraftWorkflow } from '../workflows/newsletter-draft.workflow';
+import { newsletterPipelineWorkflow } from '../workflows/newsletter-pipeline.workflow';
 import { newsletterWorkflow } from '../workflows/newsletter.workflow';
 
 const storageDir = path.resolve(import.meta.dirname, '..', '..', '.mastra', 'storage');
@@ -27,7 +28,7 @@ mkdirSync(storageDir, { recursive: true });
 readEnv();
 
 export const mastra = new Mastra({
-  workflows: { newsletterWorkflow, newsletterDraftWorkflow },
+  workflows: { newsletterWorkflow, newsletterDraftWorkflow, newsletterPipelineWorkflow },
   agents: {
     releaseAnalystAgent,
     contributorSpotlightAgent,

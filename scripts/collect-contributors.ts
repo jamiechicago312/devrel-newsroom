@@ -35,6 +35,7 @@ const mergedPullRequests = await fetchMergedPullRequests({
   sourceProject: windowInput.sourceProject,
   startDate: windowInput.startDate,
   githubToken: env.GITHUB_TOKEN,
+  maxPages: 20,
 });
 
 const filteredPullRequests = filterPullRequestsByWindow({
@@ -46,6 +47,7 @@ const filteredPullRequests = filterPullRequestsByWindow({
 const contributors = await identifyFirstTimeContributors({
   sourceProject: windowInput.sourceProject,
   pullRequests: filteredPullRequests,
+  historicalPullRequests: mergedPullRequests,
   githubToken: env.GITHUB_TOKEN,
 });
 

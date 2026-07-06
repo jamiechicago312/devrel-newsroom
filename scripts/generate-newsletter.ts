@@ -1,8 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { newsletterDraftWorkflow } from '../src/workflows/newsletter-draft.workflow.ts';
+import { newsletterPipelineWorkflow } from '../src/workflows/newsletter-pipeline.workflow.ts';
 import { newsletterWindowInputSchema } from '../src/schemas/newsletter.schema.ts';
-import { newsletterWorkflow } from '../src/workflows/newsletter.workflow.ts';
 
 const sourceProject = process.argv[2] ?? 'withastro/astro';
 const startDate = process.argv[3];
@@ -19,40 +18,40 @@ const windowInput = newsletterWindowInputSchema.parse({
   endDate,
 });
 
-const workflowRun = await newsletterWorkflow.createRun();
-const workflowResult = await workflowRun.start({
+const run = await newsletterPipelineWorkflow.createRun();
+const result = await run.start({
   inputData: windowInput,
 });
 
-if (workflowResult.status !== 'success') {
-  throw new Error(`Newsletter workflow failed with status: ${workflowResult.status}`);
-}
-
-const draftRun = await newsletterDraftWorkflow.createRun();
-const draftResult = await draftRun.start({
-  inputData: workflowResult.result,
-});
-
-if (draftResult.status !== 'success') {
-  throw new Error(`Newsletter draft workflow failed with status: ${draftResult.status}`);
+if (result.status !== 'success') {
+  throw new Error(`Newsletter pipeline workflow failed with status: ${result.status}`);
 }
 
 const outputDir = path.resolve(import.meta.dirname, '..', 'output');
 mkdirSync(outputDir, { recursive: true });
 
+const researchPath = path.resolve(outputDir, 'newsletter-data.json');
 const draftPath = path.resolve(outputDir, 'newsletter-draft.json');
 const reportPath = path.resolve(outputDir, 'newsletter-agent-report.json');
+const htmlPath = path.resolve(outputDir, 'newsletter.html');
+const jsonPath = path.resolve(outputDir, 'newsletter.json');
 
-writeFileSync(draftPath, `${JSON.stringify(draftResult.result.draft, null, 2)}\n`);
+writeFileSync(researchPath, `${JSON.stringify(result.result.research, null, 2)}\n`);
+writeFileSync(draftPath, `${JSON.stringify(result.result.draft, null, 2)}\n`);
 writeFileSync(reportPath, `${JSON.stringify({
-  draftingSource: draftResult.result.draftingSource,
-  agentBriefs: draftResult.result.agentBriefs,
-  qaReport: draftResult.result.qaReport,
+  draftingSource: result.result.draftingSource,
+  agentBriefs: result.result.agentBriefs,
+  qaReport: result.result.qaReport,
 }, null, 2)}\n`);
+writeFileSync(htmlPath, result.result.emailArtifact.html);
+writeFileSync(jsonPath, `${JSON.stringify(result.result.emailArtifact, null, 2)}\n`);
 
+console.log(`Wrote workflow output to ${researchPath}`);
 console.log(`Wrote newsletter draft to ${draftPath}`);
 console.log(`Wrote multi-agent report to ${reportPath}`);
-console.log(`Subject: ${draftResult.result.draft.subject}`);
-console.log(`Preview: ${draftResult.result.draft.previewText}`);
-console.log(`QA status: ${draftResult.result.qaReport.status}`);
-console.log(`QA summary: ${draftResult.result.qaReport.summary}`);
+console.log(`Wrote rendered newsletter HTML to ${htmlPath}`);
+console.log(`Wrote Resend-ready newsletter JSON to ${jsonPath}`);
+console.log(`Subject: ${result.result.draft.subject}`);
+console.log(`Preview: ${result.result.draft.previewText}`);
+console.log(`QA status: ${result.result.qaReport.status}`);
+console.log(`QA summary: ${result.result.qaReport.summary}`);

@@ -1,7 +1,16 @@
+import path from 'node:path';
 import { config as loadDotenv } from 'dotenv';
 import { z } from 'zod';
 
-loadDotenv();
+const repoRoot = path.resolve(import.meta.dirname, '..', '..');
+const envPaths = [
+  path.join(repoRoot, '.env'),
+  path.join(repoRoot, 'devrel-newsroom', '.env'),
+];
+
+for (const envPath of envPaths) {
+  loadDotenv({ path: envPath, override: false });
+}
 
 export const envSchema = z.object({
   GOOGLE_API_KEY: z.string().optional(),
